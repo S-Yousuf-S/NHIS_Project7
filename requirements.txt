@@ -1,0 +1,74 @@
+# === Core data handling ===
+# numpy intentionally left UNPINNED to a specific version. gensim 4.3.3 hard-caps
+# numpy<2.0, while pandas/tensorflow/scipy etc. each set their own lower bounds -
+# pinning numpy==2.2.0 (as before) collided with gensim's cap, which is what broke
+# the install. Leaving it unpinned lets pip resolve a version (will land ~1.26.x)
+# that satisfies every dependent at once.
+numpy
+pandas==2.2.3
+
+# === Visualization ===
+matplotlib==3.10.0
+seaborn==0.13.2
+wordcloud==1.9.4
+
+# === Stats / outlier & distribution helpers ===
+scipy==1.15.0
+
+# === Classical ML (sparse-TF-IDF tier: Linear SVM, Multinomial NB;
+#     dense-embedding tier: Random Forest, LightGBM) ===
+scikit-learn==1.6.1
+lightgbm==4.5.0
+# xgboost only needed if LightGBM is swapped out for XGBoost as the boosted-tree pick
+# xgboost==2.1.4
+
+# === Deep learning (BiLSTM tier) ===
+tensorflow==2.20.0
+
+# === NLP-specific: tokenization, stopwords, lemmatization ===
+nltk==3.9.1
+
+# === NLP-specific: embeddings ===
+# gensim covers Word2Vec (trained on-corpus), GloVe (loaded pretrained vectors),
+# AND FastText (gensim's own implementation) - no separate `fasttext` package
+# needed. The standalone Facebook `fasttext` PyPI package requires a C++ build
+# toolchain and is a common source of install failures on Windows - gensim's
+# FastText avoids that entirely and is the safer choice here.
+gensim==4.3.3
+
+# === NLP-specific: sentiment analysis ===
+vaderSentiment==3.3.2
+
+# === NLP-specific: keyword extraction ===
+# yake chosen as a reasonable default for short/noisy text (tweets) - no training
+# required. Swap this out once the exact technique from the recording is confirmed.
+yake==0.4.8
+
+# === Serialization / utility ===
+joblib==1.4.2
+
+# === Notebook environment ===
+jupyter==1.1.1
+notebook==7.3.2
+ipykernel==6.29.5
+ipython==8.31.0
+
+# === Deployment ===
+streamlit==1.41.1
+
+# === Data loading cascade (Drive fallback) ===
+gdown==5.2.0
+
+# === DistilBERT tier — CONFIRMED MANDATORY (supervisor's requested model, 24 Sep 2026) ===
+# Left version-unpinned deliberately, same reasoning as numpy above: pinning exact
+# torch/transformers versions is a likely source of resolver conflicts. Pin these
+# once the Colab environment is confirmed working end-to-end.
+transformers
+torch
+accelerate
+
+# === NOT included, per supervisor's binding overrides ===
+# mlflow    -> explicitly dropped, no MLflow tracking this project
+# dvc       -> not confirmed as required for this project (was Project 6-specific);
+#              add back if your supervisor wants data-versioning screenshots again
+# statsmodels -> was for Project 6's ARIMA/SARIMA time-series tier, not applicable here
