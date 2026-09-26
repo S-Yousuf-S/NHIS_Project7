@@ -32,10 +32,9 @@
 
  Usage        : from prerequisites import *
 
- Note         : Color theme below is a placeholder pending the deck's final
-                Twitter-style light/sky-blue direction (TBD) - swap
-                PRIMARY_COLOR/SECONDARY_COLOR etc. once that's locked,
-                everything else here is theme-agnostic.
+ Note         : Color theme is Twitter-blue (PRIMARY_COLOR #1DA1F2), matching
+                Project 5's convention of a per-project brand color with
+                fixed semantic colors (SUCCESS/WARNING/INFO unchanged).
 ================================================================================
 """
 
@@ -54,15 +53,17 @@ from scipy.stats import skew, kurtosis, zscore
 from IPython.display import display, HTML
 
 # =========================================================
-# COLOR THEME (placeholder — confirm once deck theme is locked)
+# COLOR THEME — Twitter-blue for this project 
+# Semantic colors (SUCCESS/WARNING/INFO) stay the same
+# fixed values used across every project - only the brand colors change.
 # =========================================================
-PRIMARY_COLOR = "indigo"
-SECONDARY_COLOR = "thistle"
-SUCCESS_COLOR = "#2E8B57"
-WARNING_COLOR = "#C0392B"
-INFO_COLOR = "#1F77B4"
-TABLE_COLOR = "mediumpurple"
-TITLE_COLOR = "midnightblue"
+PRIMARY_COLOR = "deepskyblue"  # Twitter blue - section header background
+SECONDARY_COLOR = "aliceblue"  # alice-blue tint - subsection background
+SUCCESS_COLOR = "#2E8B57"    # fixed semantic color, same every project
+WARNING_COLOR = "#C0392B"    # fixed semantic color, same every project
+INFO_COLOR = "#1F77B4"       # fixed semantic color, same every project
+TABLE_COLOR = "skyblue"        # sky-blue shade for table headers
+PLOT_COLOR = "midnightblue"    # matplotlib chart titles/text
 
 
 # =========================================================
@@ -88,7 +89,7 @@ def setup_logging(log_dir="logs", name="Project7"):
     file_handler.setFormatter(formatter)
 
     console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.INFO)
+    console_handler.setLevel(logging.DEBUG)
     console_handler.setFormatter(formatter)
 
     logger.addHandler(file_handler)
@@ -100,65 +101,60 @@ def setup_logging(log_dir="logs", name="Project7"):
 
 # =========================================================
 # HTML STATUS BOXES / SECTION HEADERS
+# Established convention: centered text, inline styles 
+# (not a <style> block, which can leak/conflict across
+# Colab cell outputs), two-tier bold-label + black-message box format.
 # =========================================================
-def section_header(title):
+def section_header(title, pillar=False):
+    bg = PRIMARY_COLOR
     display(HTML(f"""
-    <div style="background-color:{PRIMARY_COLOR}; color:white; padding:12px 18px;
-                border-radius:6px; margin-top:24px; margin-bottom:12px;">
-        <h2 style="margin:0;">{title}</h2>
-    </div>
-    """))
+    <div style="background:{bg};color:white;padding:16px;border-radius:8px;font-size:28px;font-weight:bold;margin-top:20px;margin-bottom:12px;text-align:center;">
+        {title}
+    </div>"""))
 
 
 def subsection_header(title):
     display(HTML(f"""
-    <div style="border-left:5px solid {SECONDARY_COLOR}; padding:6px 14px;
-                margin-top:16px; margin-bottom:8px;">
-        <h3 style="margin:0; color:{TITLE_COLOR};">{title}</h3>
-    </div>
-    """))
+    <div style="background:{SECONDARY_COLOR};border-left:6px solid {PRIMARY_COLOR};color:{PRIMARY_COLOR};padding:10px;border-radius:6px;font-size:20px;font-weight:bold;margin-top:15px;margin-bottom:10px;text-align:center;">
+        <i>{title}</i>
+    </div>"""))
 
 
 def success_box(message):
     display(HTML(f"""
-    <div style="background-color:#EAF7EF; border-left:5px solid {SUCCESS_COLOR};
-                padding:10px 16px; margin:8px 0; border-radius:4px;">
-        <b style="color:{SUCCESS_COLOR};">Success:</b> {message}
-    </div>
-    """))
+    <div style="background:#EAF7EA;border-left:6px solid {SUCCESS_COLOR};color:{SUCCESS_COLOR};padding:12px;border-radius:6px;margin:10px 0;">
+        <b>✅ Success:</b><br><span style="color:black;">{message}</span>
+    </div>"""))
 
 
 def warning_box(message):
     display(HTML(f"""
-    <div style="background-color:#FBEAEA; border-left:5px solid {WARNING_COLOR};
-                padding:10px 16px; margin:8px 0; border-radius:4px;">
-        <b style="color:{WARNING_COLOR};">Warning:</b> {message}
-    </div>
-    """))
+    <div style="background:#FDEDEC;border-left:6px solid {WARNING_COLOR};color:{WARNING_COLOR};padding:12px;border-radius:6px;margin:10px 0;">
+        <b>⚠️ Note:</b><br><span style="color:black;">{message}</span>
+    </div>"""))
 
 
 def info_box(message):
     display(HTML(f"""
-    <div style="background-color:#EAF2FB; border-left:5px solid {INFO_COLOR};
-                padding:10px 16px; margin:8px 0; border-radius:4px;">
-        <b style="color:{INFO_COLOR};">Info:</b> {message}
-    </div>
-    """))
+    <div style="background:#F1F3F6;border-left:6px solid {INFO_COLOR};color:{INFO_COLOR};padding:12px;border-radius:6px;margin:10px 0;">
+        <b>ℹ️ Information:</b><br><span style="color:black;">{message}</span>
+    </div>"""))
 
 
-def centered_table(df, max_rows=20):
-    """Renders a DataFrame as a centered, styled HTML table."""
-    html = df.head(max_rows).to_html(classes="styled-table", border=0)
-    display(HTML(f"""
-    <div style="display:flex; justify-content:center; margin:12px 0;">
-        <style>
-            .styled-table {{ border-collapse: collapse; font-size:0.9em; }}
-            .styled-table th {{ background-color:{TABLE_COLOR}; color:white; padding:6px 12px; }}
-            .styled-table td {{ padding:6px 12px; border-bottom:1px solid #ddd; }}
-        </style>
-        {html}
-    </div>
-    """))
+def centered_table(df, index=False, float_format='{:.2f}'):
+    """Renders a DataFrame as a centered, well-spaced HTML table matching the theme."""
+    html = df.to_html(index=index, border=0, escape=False, float_format=float_format.format)
+    html = html.replace('class="dataframe"', '')
+    html = html.replace(
+        '<table', '<table style="margin:auto;border-collapse:separate;border-spacing:0;'
+        'border:1px solid #ccc;border-radius:6px;overflow:hidden;"'
+    ).replace(
+        '<th>', f'<th style="background:{TABLE_COLOR};color:white;padding:10px 24px;'
+                f'text-align:center !important;border-bottom:1px solid #ccc;">'
+    ).replace(
+        '<td>', '<td style="padding:8px 24px;text-align:center !important;border-bottom:1px solid #eee;">'
+    )
+    display(HTML(f'<div style="overflow-x:auto;margin:15px 0;">{html}</div>'))
 
 
 # =========================================================
@@ -198,11 +194,19 @@ def load_data_file(
         drive_file = os.path.join(drive_path, filename)
         if os.path.exists(drive_file):
             logging.getLogger("Project7").info(f"[{dataset_name}] Loaded from Drive: {drive_file}")
-            return pd.read_csv(drive_file)
+            df = pd.read_csv(drive_file)
+            os.makedirs(local_dir, exist_ok=True)
+            df.to_csv(local_path, index=False)
+            logging.getLogger("Project7").debug(f"[{dataset_name}] Cached local copy: {local_path}")
+            return df
 
     github_url = f"{github_raw_base}/{filename}"
     logging.getLogger("Project7").info(f"[{dataset_name}] Falling back to GitHub: {github_url}")
-    return pd.read_csv(github_url)
+    df = pd.read_csv(github_url)
+    os.makedirs(local_dir, exist_ok=True)
+    df.to_csv(local_path, index=False)
+    logging.getLogger("Project7").debug(f"[{dataset_name}] Cached local copy: {local_path}")
+    return df
 
 
 # =========================================================
