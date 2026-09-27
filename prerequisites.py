@@ -81,7 +81,8 @@ def setup_logging(log_dir="logs", name="Project7"):
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
     logger.handlers.clear()
-
+    logger.propagate = False
+    
     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
     file_handler = logging.FileHandler(log_filename, mode="a")
@@ -285,6 +286,7 @@ def missing_value_audit(df, dataset_name="dataset"):
     pct = (missing / len(df)) * 100
     audit = pd.DataFrame({"missing_count": missing, "missing_pct": pct.round(2)})
     audit = audit[audit["missing_count"] > 0].sort_values("missing_count", ascending=False)
+    audit = audit.reset_index().rename(columns={"index": "column"})
     logging.getLogger("Project7").info(f"[{dataset_name}] Missing-value audit: {len(audit)} columns affected")
     return audit
 
