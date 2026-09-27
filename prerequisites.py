@@ -69,20 +69,17 @@ PLOT_COLOR = "midnightblue"    # matplotlib chart titles/text
 # =========================================================
 # LOGGING
 # =========================================================
-def setup_logging(log_dir="logs", name="Project7"):
-    """
-    Sets up a logger writing to a date-only filename (YS_ prefix), append
-    mode, DEBUG level, with both file and console handlers. Logger name
-    is included in the formatter for cross-notebook differentiation.
-    """
+LOGGER_NAME = "disaster_classification"
+
+def setup_logging(log_dir="logs", name=LOGGER_NAME):
     os.makedirs(log_dir, exist_ok=True)
-    log_filename = os.path.join(log_dir, f"YS_{datetime.now().strftime('%Y-%m-%d')}.log")
+    log_filename = os.path.join(log_dir, f"YS_{name}_{datetime.now().strftime('%Y-%m-%d')}.log")
 
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
     logger.handlers.clear()
     logger.propagate = False
-    
+
     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
     file_handler = logging.FileHandler(log_filename, mode="a")
@@ -188,25 +185,25 @@ def load_data_file(
     """
     local_path = os.path.join(local_dir, filename)
     if os.path.exists(local_path):
-        logging.getLogger("Project7").info(f"[{dataset_name}] Loaded locally: {local_path}")
+        logging.getLogger(LOGGER_NAME).info(f"[{dataset_name}] Loaded locally: {local_path}")
         return pd.read_csv(local_path)
 
     if drive_path:
         drive_file = os.path.join(drive_path, filename)
         if os.path.exists(drive_file):
-            logging.getLogger("Project7").info(f"[{dataset_name}] Loaded from Drive: {drive_file}")
+            logging.getLogger(LOGGER_NAME).info(f"[{dataset_name}] Loaded from Drive: {drive_file}")
             df = pd.read_csv(drive_file)
             os.makedirs(local_dir, exist_ok=True)
             df.to_csv(local_path, index=False)
-            logging.getLogger("Project7").debug(f"[{dataset_name}] Cached local copy: {local_path}")
+            logging.getLogger(LOGGER_NAME).debug(f"[{dataset_name}] Cached local copy: {local_path}")
             return df
 
     github_url = f"{github_raw_base}/{filename}"
-    logging.getLogger("Project7").info(f"[{dataset_name}] Falling back to GitHub: {github_url}")
+    logging.getLogger(LOGGER_NAME).info(f"[{dataset_name}] Falling back to GitHub: {github_url}")
     df = pd.read_csv(github_url)
     os.makedirs(local_dir, exist_ok=True)
     df.to_csv(local_path, index=False)
-    logging.getLogger("Project7").debug(f"[{dataset_name}] Cached local copy: {local_path}")
+    logging.getLogger(LOGGER_NAME).debug(f"[{dataset_name}] Cached local copy: {local_path}")
     return df
 
 
@@ -239,7 +236,7 @@ def save_model_artifact(model, model_name, local_dir="Assets/models", framework=
         filename = f"{model_name}_{timestamp}.pkl"
         joblib.dump(model, os.path.join(local_dir, filename))
 
-    logging.getLogger("Project7").info(f"Saved model artifact: {filename}")
+    logging.getLogger(LOGGER_NAME).info(f"Saved model artifact: {filename}")
     return filename
 
 
@@ -267,10 +264,10 @@ def load_latest_model_artifact(model_name, local_dir="Assets/models", drive_dir=
         source = "Drive"
 
     if not latest:
-        logging.getLogger("Project7").info(f"No existing artifact for {model_name} - training required")
+        logging.getLogger(LOGGER_NAME).info(f"No existing artifact for {model_name} - training required")
         return None
 
-    logging.getLogger("Project7").info(f"Found existing {source} artifact, skipping retraining: {latest}")
+    logging.getLogger(LOGGER_NAME).info(f"Found existing {source} artifact, skipping retraining: {latest}")
     if framework == "keras":
         from tensorflow import keras
         return keras.models.load_model(latest)
@@ -287,13 +284,13 @@ def missing_value_audit(df, dataset_name="dataset"):
     audit = pd.DataFrame({"missing_count": missing, "missing_pct": pct.round(2)})
     audit = audit[audit["missing_count"] > 0].sort_values("missing_count", ascending=False)
     audit = audit.reset_index().rename(columns={"index": "column"})
-    logging.getLogger("Project7").info(f"[{dataset_name}] Missing-value audit: {len(audit)} columns affected")
+    logging.getLogger(LOGGER_NAME).info(f"[{dataset_name}] Missing-value audit: {len(audit)} columns affected")
     return audit
 
 
 def duplicate_check(df, subset=None, dataset_name="dataset"):
     dupe_count = df.duplicated(subset=subset).sum()
-    logging.getLogger("Project7").info(f"[{dataset_name}] Duplicate rows found: {dupe_count}")
+    logging.getLogger(LOGGER_NAME).info(f"[{dataset_name}] Duplicate rows found: {dupe_count}")
     return dupe_count
 
 
