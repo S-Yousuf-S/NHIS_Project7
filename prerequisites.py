@@ -139,7 +139,7 @@ def info_box(message):
     </div>"""))
 
 
-def centered_table(df, index=False, float_format='{:.2f}'):
+def centered_table(df, index=False, float_format='{:.4f}'):
     """Renders a DataFrame as a centered, well-spaced HTML table matching the theme."""
     html = df.to_html(index=index, border=0, escape=False, float_format=float_format.format)
     html = html.replace('class="dataframe"', '')
