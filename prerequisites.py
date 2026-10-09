@@ -743,48 +743,19 @@ def load_distilbert_artifact(
         )
 
 
+ 
     # -----------------------------------------------------
     # 1. Local
     # -----------------------------------------------------
 
-    local_model_files_exist = (
+    if (
         isinstance(local_dir, (str, os.PathLike))
-        and os.path.isfile(
-            os.path.join(os.fspath(local_dir), "config.json")
-        )
-        and (
-            os.path.isfile(
-                os.path.join(
-                    os.fspath(local_dir),
-                    "model.safetensors"
-                )
-            )
-            or os.path.isfile(
-                os.path.join(
-                    os.fspath(local_dir),
-                    "pytorch_model.bin"
-                )
-            )
-            or os.path.isfile(
-                os.path.join(
-                    os.fspath(local_dir),
-                    "model.safetensors.index.json"
-                )
-            )
-            or os.path.isfile(
-                os.path.join(
-                    os.fspath(local_dir),
-                    "pytorch_model.bin.index.json"
-                )
-            )
-        )
-    )
-
-    if local_model_files_exist:
-
+        and os.path.isdir(local_dir)
+    ):
         try:
             logger.info(
-                f"Found valid local DistilBERT model: {local_dir}"
+                "Attempting to restore local DistilBERT artifact: %s",
+                local_dir
             )
 
             tokenizer = tokenizer_class.from_pretrained(
@@ -795,23 +766,18 @@ def load_distilbert_artifact(
                 local_dir
             )
 
+            logger.info(
+                "Local DistilBERT model and tokenizer restored successfully."
+            )
+
             return model, tokenizer
 
         except Exception as e:
             logger.warning(
-                f"Local DistilBERT loading failed: {e}. "
-                "Trying the next available persistence source."
+                "Local DistilBERT restoration failed: %s. "
+                "Falling back to the next persistence source.",
+                e
             )
-
-    elif (
-        isinstance(local_dir, (str, os.PathLike))
-        and os.path.isdir(local_dir)
-    ):
-        logger.warning(
-            "Local DistilBERT directory exists but its model "
-            "configuration or weight files are missing. "
-            "Trying the next available persistence source."
-        )
 
     # -----------------------------------------------------
     # 2. Google Drive
