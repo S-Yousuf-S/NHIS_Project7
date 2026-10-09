@@ -748,9 +748,15 @@ def load_distilbert_artifact(
     # 1. Local
     # -----------------------------------------------------
 
+    _local_config = (
+        os.path.join(os.fspath(local_dir), "config.json")
+        if isinstance(local_dir, (str, os.PathLike))
+        else None
+    )
+
     if (
-        isinstance(local_dir, (str, os.PathLike))
-        and os.path.isdir(local_dir)
+        _local_config is not None
+        and os.path.isfile(_local_config)
     ):
         try:
             logger.info(
@@ -758,27 +764,27 @@ def load_distilbert_artifact(
                 local_dir
             )
 
-            tokenizer = tokenizer_class.from_pretrained(
-                local_dir
-            )
-
-            model = model_class.from_pretrained(
-                local_dir
-            )
+            tokenizer = tokenizer_class.from_pretrained(local_dir)
+            model = model_class.from_pretrained(local_dir)
 
             logger.info(
                 "Local DistilBERT model and tokenizer restored successfully."
             )
-
             return model, tokenizer
 
         except Exception as e:
             logger.warning(
                 "Local DistilBERT restoration failed: %s. "
-                "Falling back to the next persistence source.",
+                "Trying the next persistence source.",
                 e
             )
 
+    else:
+        logger.info(
+            "No complete DistilBERT artifact at the local directory root; "
+            "skipping local restoration."
+        )
+        
     # -----------------------------------------------------
     # 2. Google Drive
     # -----------------------------------------------------
