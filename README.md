@@ -1,4 +1,4 @@
-# 🚨 DISASTER TWEETS CLASSIFICATION
+# 🚨 DISASTER TWEET CLASSIFICATION
 ### *Telling Real Emergency Reports from Everyday Language — From Raw Tweets to a Live Checking Dashboard*
 
 ![Python](https://img.shields.io/badge/Language-Python%203.10+-blue)
@@ -31,18 +31,19 @@ Rather than building one model and reporting its score, the project builds six g
 > **⚠️ EVALUATION NOTICE:**
 > Full findings, interpretations and model comparisons are in the notebook itself — every analytical
 > section closes with an Interpretation block, and the notebook ends with a Final Model Comparison and
-> Final Summary. A supplementary slide deck covering the key results and the live dashboard is also
-> included in this repository.
+> Final Summary. A supplementary slide deck
+> ([`Tweets_Classification_Presentation_YS.pptx`](./Tweets_Classification_Presentation_YS.pptx))
+> covering the key results and the live dashboard is also included in this repository.
 
 ---
 
 ## 🔴 Live Dashboard
 
-**[Disaster Tweets Classification](https://disaster-tweets-classification.streamlit.app)**
+**[Disaster Tweet Checker](https://disaster-tweet-checker.streamlit.app/)**
 
 Paste or type a short English message (or tap one of three examples) and the dashboard answers **Disaster report**, **Not a disaster** or **Not sure**, with a likelihood bar and a plain-language explanation.
 
-> **Note:** the DistilBERT weights are downloaded from Hugging Face on first launch ([`DistilBERT-HuggingFace`](https://huggingface.co/ysakkaf/nhis-project7-distilbert)). The first check after the app wakes from idle can take a minute; every check after that is quick.
+> **Note:** the DistilBERT weights are downloaded from Hugging Face on first launch ([`ysakkaf/nhis-project7-distilbert`](https://huggingface.co/ysakkaf/nhis-project7-distilbert)). The first check after the app wakes from idle can take a minute; every check after that is quick.
 
 ---
 
@@ -181,7 +182,7 @@ A Streamlit app serving the selected DistilBERT model.
 NHIS_Project7/
 │
 ├── Assets/                                   # Data, saved models and results
-│   ├── <dataset csv>                         # Source tweets
+│   ├── twitter_disaster.csv                  # Source tweets
 │   └── models/                               # Saved artifacts (.pkl bundles, test predictions, model folders)
 │
 ├── deploy_assets/                            # Dashboard runtime files (logo, evaluation bundle)
@@ -194,6 +195,7 @@ NHIS_Project7/
 ├── .streamlit/config.toml                    # Dashboard theme configuration
 │
 ├── disaster_tweet_classification.ipynb       # The full analysis (single notebook)
+├── Tweets_Classification_Presentation_YS.pptx  # Slide deck
 ├── prerequisites.py                          # Shared utility module
 ├── disaster_tweet_dashboard.py               # Streamlit dashboard
 │
@@ -222,8 +224,13 @@ NHIS_Project7/
 | **tensorflow / keras** | BiLSTM |
 | **torch / transformers / accelerate** | DistilBERT fine-tuning and inference |
 | **streamlit** | The dashboard |
+| **joblib** | Saving and loading trained models and results |
+| **huggingface_hub** | Hosting and downloading the DistilBERT weights |
+| **gdown** | Downloading saved files from Google Drive (fallback in the loading cascade) |
 
-Exact pinned versions are in `requirements-full.txt` (everything needed for the notebook and local development) and `requirements.txt` (the slimmer set needed only to run the dashboard).
+Exact pinned versions are in `requirements-full.txt` (everything needed for the notebook and local development) and `requirements.txt` (the slimmer set needed only to run the dashboard, with CPU-only PyTorch).
+
+> The notebook also downloads the NLTK word lists and the spaCy English model (`en_core_web_sm`) on its first run, so no manual download step is needed.
 
 ---
 
@@ -342,6 +349,23 @@ This project takes disaster-tweet classification from raw, messy text to a deplo
 - Calibrate the model's probabilities, since the loss curves suggest DistilBERT is somewhat over-confident on the tweets it gets wrong.
 - Repeat training with several random seeds, or use cross-validation for the deep models, to tighten the comparison against Logistic Regression.
 - Extend the dashboard with a batch-upload mode for checking many messages at once.
+
+---
+
+## 📜 License & Acknowledgements
+
+This project's own code and notebook are released under the **MIT License** (see [`LICENSE`](./LICENSE)).
+
+It builds on third-party work that keeps its own licence:
+
+| Component | Used for | Licence |
+|---|---|---|
+| **DistilBERT** (`distilbert-base-uncased`, Hugging Face) | Starting point for the fine-tuned model | Apache License 2.0 |
+| **GloVe Twitter embeddings** (Stanford NLP, via Gensim) | Dense word representations | Public Domain Dedication and License (PDDL) |
+| **Open-source libraries** (scikit-learn, TensorFlow, PyTorch, Transformers, Streamlit, and others) | Modelling and dashboard | Each library's own licence (mostly BSD, MIT or Apache 2.0) |
+| **Tweet dataset** (`twitter_disaster.csv`) | Training and evaluation | [ADD THE DATASET SOURCE AND ITS TERMS OF USE HERE] |
+
+The fine-tuned DistilBERT weights are a derivative of the Apache-2.0 base model and are hosted on Hugging Face under the same terms. The tweets in the dataset belong to their original authors and are used here only for learning and evaluation.
 
 ---
 
