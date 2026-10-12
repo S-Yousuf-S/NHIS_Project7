@@ -38,11 +38,11 @@ Rather than building one model and reporting its score, the project builds six g
 
 ## 🔴 Live Dashboard
 
-**[https://disaster-tweets-classification.streamlit.app]**
+**[Disaster Tweets Classification](https://disaster-tweets-classification.streamlit.app)**
 
 Paste or type a short English message (or tap one of three examples) and the dashboard answers **Disaster report**, **Not a disaster** or **Not sure**, with a likelihood bar and a plain-language explanation.
 
-> **Note:** the DistilBERT weights are downloaded from Hugging Face on first launch ([`ysakkaf/nhis-project7-distilbert`](https://huggingface.co/ysakkaf/nhis-project7-distilbert)). The first check after the app wakes from idle can take a minute; every check after that is quick.
+> **Note:** the DistilBERT weights are downloaded from Hugging Face on first launch ([`DistilBERT-HuggingFace`](https://huggingface.co/ysakkaf/nhis-project7-distilbert)). The first check after the app wakes from idle can take a minute; every check after that is quick.
 
 ---
 
