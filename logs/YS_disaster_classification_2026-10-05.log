@@ -1,0 +1,228 @@
+2026-10-05 06:04:59,293 - disaster_classification - INFO - Logging initialized -> logs/YS_disaster_classification_2026-10-05.log
+2026-10-05 06:06:09,891 - disaster_classification - INFO - Environment setup complete
+2026-10-05 06:06:09,978 - disaster_classification - INFO - Environment initialized — TF GPU: False, Torch GPU: False
+2026-10-05 06:06:16,319 - disaster_classification - INFO - Cascade setup complete — DRIVE_PATH=/content/drive/MyDrive/NHIS_Project/Project 7/Assets
+2026-10-05 06:06:16,440 - disaster_classification - INFO - [disaster_tweets] Falling back to GitHub: https://raw.githubusercontent.com/S-Yousuf-S/NHIS_Project7/main/Assets/twitter_disaster.csv
+2026-10-05 06:06:17,668 - disaster_classification - DEBUG - [disaster_tweets] Cached local copy: Assets/twitter_disaster.csv
+2026-10-05 06:06:17,836 - disaster_classification - DEBUG - Column structure computed: {'column': {0: 'id', 1: 'keyword', 2: 'location', 3: 'text', 4: 'target'}, 'dtype': {0: 'int64', 1: 'object', 2: 'object', 3: 'object', 4: 'int64'}, 'non_null_count': {0: 7613, 1: 7552, 2: 5079, 3: 7613, 4: 7613}, 'null_count': {0: 0, 1: 61, 2: 2534, 3: 0, 4: 0}}
+2026-10-05 06:06:17,894 - disaster_classification - DEBUG - target_label column created — mapping 0->Non-Disaster, 1->Disaster
+2026-10-05 06:06:17,971 - disaster_classification - INFO - Raw data loaded — shape=(7613, 6), target distribution={'Non-Disaster': 4342, 'Disaster': 3271}
+2026-10-05 06:06:18,075 - disaster_classification - INFO - [disaster_tweets] Duplicate rows found: 52
+2026-10-05 06:06:18,141 - disaster_classification - DEBUG - Dropped 52 exact duplicate rows (id excluded)
+2026-10-05 06:06:18,364 - disaster_classification - DEBUG - Resolved 18 conflicting-label texts, dropped 26 rows
+2026-10-05 06:06:18,390 - disaster_classification - DEBUG - Dropped 45 repeated texts
+2026-10-05 06:06:18,409 - disaster_classification - INFO - Duplicate handling complete — shape=(7490, 6), rows_removed=123
+2026-10-05 06:06:18,466 - disaster_classification - INFO - [disaster_tweets] Missing-value audit: 2 columns affected
+2026-10-05 06:06:18,474 - disaster_classification - DEBUG - Missing-value audit: {'column': {0: 'location', 1: 'keyword'}, 'missing_count': {0: 2476, 1: 56}, 'missing_pct': {0: 33.06, 1: 0.75}}
+2026-10-05 06:06:18,513 - disaster_classification - DEBUG - Missing-value schema check passed — only expected columns (keyword, location) have missing values
+2026-10-05 06:06:18,525 - disaster_classification - DEBUG - Filled missing 'keyword' values with 'unknown'
+2026-10-05 06:06:21,221 - disaster_classification - DEBUG - Named-entity recognition model loaded
+2026-10-05 06:07:17,497 - disaster_classification - DEBUG - NER recovered 412 location values from text
+2026-10-05 06:07:17,573 - disaster_classification - DEBUG - Cast 'keyword' to category dtype — 222 unique values
+2026-10-05 06:07:17,583 - disaster_classification - DEBUG - Cast 'location_source' to category dtype — 3 unique values
+2026-10-05 06:07:17,593 - disaster_classification - DEBUG - Cast 'target_label' to category dtype — 2 unique values
+2026-10-05 06:07:17,675 - disaster_classification - INFO - Post-cleaning validation — nulls=0, label_mismatch=0, repeated_texts=0
+2026-10-05 06:07:17,704 - disaster_classification - INFO - Checkpoint created — df_refined shape=(7490, 7)
+2026-10-05 06:07:18,782 - disaster_classification - DEBUG - Created 'char_count' — mean=100.88, max=157.00
+2026-10-05 06:07:18,783 - disaster_classification - DEBUG - Created 'word_count' — mean=14.88, max=31.00
+2026-10-05 06:07:18,785 - disaster_classification - DEBUG - Created 'avg_word_length' — mean=6.13, max=19.33
+2026-10-05 06:07:18,786 - disaster_classification - DEBUG - Created 'hashtag_count' — mean=0.43, max=13.00
+2026-10-05 06:07:18,790 - disaster_classification - DEBUG - Created 'mention_count' — mean=0.36, max=8.00
+2026-10-05 06:07:18,791 - disaster_classification - DEBUG - Created 'url_count' — mean=0.63, max=4.00
+2026-10-05 06:07:18,792 - disaster_classification - DEBUG - Created 'uppercase_ratio' — mean=0.10, max=1.00
+2026-10-05 06:07:18,796 - disaster_classification - DEBUG - Created 'punctuation_count' — mean=6.83, max=57.00
+2026-10-05 06:07:18,799 - disaster_classification - DEBUG - Created 'digit_count' — mean=2.04, max=39.00
+2026-10-05 06:07:18,919 - disaster_classification - INFO - Structural features complete — df_refined shape=(7490, 16)
+2026-10-05 06:07:20,670 - disaster_classification - DEBUG - Created VADER sentiment scores and sentiment_label columns
+2026-10-05 06:07:20,741 - disaster_classification - DEBUG - Sentiment scores computed: {'count': {'sentiment_neg': 7490, 'sentiment_neu': 7490, 'sentiment_pos': 7490, 'sentiment_compound': 7490}, 'mean': {'sentiment_neg': 0.1486611481975968, 'sentiment_neu': 0.7701941255006677, 'sentiment_pos': 0.08114926568758345, 'sentiment_compound': -0.1439413217623498}, 'std': {'sentiment_neg': 0.16062623723542938, 'sentiment_neu': 0.17918781981074974, 'sentiment_pos': 0.12415981603296854, 'sentiment_compound': 0.4645467305685641}, 'min': {'sentiment_neg': 0.0, 'sentiment_neu': 0.0, 'sentiment_pos': 0.0, 'sentiment_compound': -0.9883}, '25%': {'sentiment_neg': 0.0, 'sentiment_neu': 0.65, 'sentiment_pos': 0.0, 'sentiment_compound': -0.5423}, '50%': {'sentiment_neg': 0.125, 'sentiment_neu': 0.776, 'sentiment_pos': 0.0, 'sentiment_compound': 0.0}, '75%': {'sentiment_neg': 0.253, 'sentiment_neu': 0.914, 'sentiment_pos': 0.148, 'sentiment_compound': 0.0772}, 'max': {'sentiment_neg': 1.0, 'sentiment_neu': 1.0, 'sentiment_pos': 0.901, 'sentiment_compound': 0.973}}
+2026-10-05 06:07:20,802 - disaster_classification - DEBUG - Sentiment label distribution: {'sentiment_label': {0: 'Negative', 1: 'Positive', 2: 'Neutral'}, 'count': {0: 3684, 1: 1934, 2: 1872}, 'pct': {0: 49.19, 1: 25.82, 2: 24.99}}
+2026-10-05 06:07:20,808 - disaster_classification - INFO - Sentiment features complete — df_refined shape=(7490, 21)
+2026-10-05 06:07:21,573 - disaster_classification - DEBUG - disaster_type created — 13 categories
+2026-10-05 06:07:21,612 - disaster_classification - INFO - Disaster-type categorization complete — df_refined shape=(7490, 22)
+2026-10-05 06:07:40,966 - disaster_classification - DEBUG - Tokenization complete — 2 rows produced zero tokens after cleaning
+2026-10-05 06:07:40,984 - disaster_classification - INFO - Text preprocessing complete — df_refined shape=(7490, 24)
+2026-10-05 06:07:41,038 - disaster_classification - INFO - Feature Engineering (Scalar) validation — nulls=0, empty_tokens=2
+2026-10-05 06:07:42,397 - disaster_classification - INFO - Univariate keyword analysis plotted: top 15 keyword frequencies (excl. unknown) with insight summary
+2026-10-05 06:07:42,978 - disaster_classification - INFO - Univariate distribution analysis plotted: class balance, tweet character/word length, and insight summary
+2026-10-05 06:07:55,198 - disaster_classification - INFO - Univariate boxplot grid rendered — outlier severity assessed for all 13 numeric features
+2026-10-05 06:07:55,285 - disaster_classification - INFO - Outlier decision table finalized — capping: ['avg_word_length', 'hashtag_count', 'uppercase_ratio', 'digit_count']
+2026-10-05 06:07:55,315 - disaster_classification - DEBUG - Capped 'avg_word_length' at 99th percentile (11.364) — 73 rows affected
+2026-10-05 06:07:55,325 - disaster_classification - DEBUG - Capped 'hashtag_count' at 99th percentile (5.000) — 56 rows affected
+2026-10-05 06:07:55,334 - disaster_classification - DEBUG - Capped 'uppercase_ratio' at 99th percentile (0.643) — 75 rows affected
+2026-10-05 06:07:55,343 - disaster_classification - DEBUG - Capped 'digit_count' at 99th percentile (12.000) — 73 rows affected
+2026-10-05 06:07:55,354 - disaster_classification - INFO - Outlier treatment complete — capped: ['avg_word_length', 'hashtag_count', 'uppercase_ratio', 'digit_count']
+2026-10-05 06:07:57,346 - disaster_classification - INFO - Post-treatment distributions rendered for capped features
+2026-10-05 06:07:58,142 - disaster_classification - INFO - Univariate disaster_type frequency plotted
+2026-10-05 06:07:59,068 - disaster_classification - INFO - Univariate location analysis plotted — top 15 location frequencies
+2026-10-05 06:07:59,568 - disaster_classification - INFO - Univariate categorical analysis plotted — sentiment label and location source distributions
+2026-10-05 06:08:01,013 - disaster_classification - INFO - Bivariate tweet length distribution analysis plotted
+2026-10-05 06:08:02,072 - disaster_classification - INFO - Bivariate keyword-vs-target chart rendered
+2026-10-05 06:08:02,641 - disaster_classification - INFO - Bivariate hashtag/mention/url presence-rate vs target rendered
+2026-10-05 06:08:03,496 - disaster_classification - INFO - Bivariate sentiment vs target rendered
+2026-10-05 06:08:04,381 - disaster_classification - INFO - Bivariate disaster_type vs target rendered — percentage labels added to stacked segments
+2026-10-05 06:08:06,036 - disaster_classification - INFO - Bivariate sentiment-vs-length scatter rendered
+2026-10-05 06:08:08,474 - disaster_classification - INFO - Multivariate correlation heatmap rendered
+2026-10-05 06:08:08,502 - disaster_classification - INFO - Multivariate correlation with target table rendered
+2026-10-05 06:08:11,875 - disaster_classification - INFO - Multivariate n-gram analysis rendered — top n-grams displayed in descending frequency order
+2026-10-05 06:08:12,114 - disaster_classification - INFO - BoW vectorization complete — shape=(7490, 5000)
+2026-10-05 06:08:12,330 - disaster_classification - INFO - TF-IDF vectorization complete — shape=(7490, 5000)
+2026-10-05 06:08:12,745 - disaster_classification - INFO - TF-IDF+n-grams vectorization complete — shape=(7490, 5000)
+2026-10-05 06:08:13,988 - disaster_classification - INFO - Word2Vec vectorization complete — shape=(7490, 100), zero_vector_rows=9
+2026-10-05 06:09:56,944 - disaster_classification - INFO - GloVe embedding complete — shape=(7490, 25), zero_vector_rows=3
+2026-10-05 06:10:09,352 - disaster_classification - INFO - FastText embedding complete — shape=(7490, 100), zero_vector_rows=2
+2026-10-05 06:10:53,246 - disaster_classification - INFO - YAKE keyword extraction complete — tweets_processed=7,490
+2026-10-05 06:35:26,040 - disaster_classification - INFO - Representation summary completed — BoW, TF-IDF, TF-IDF+n-grams, Word2Vec, GloVe, FastText and YAKE documented.
+2026-10-05 06:50:58,441 - disaster_classification - INFO - Model-readiness checkpoint completed — rows=7490, columns=25, numeric_features=14, categorical_features=5, text_fields=4, missing_cells=0, duplicates=0
+2026-10-05 07:05:44,633 - disaster_classification - INFO - Logging initialized -> logs/YS_disaster_classification_2026-10-05.log
+2026-10-05 07:05:44,866 - disaster_classification - INFO - Environment setup complete
+2026-10-05 07:05:44,893 - disaster_classification - INFO - Environment initialized — TF GPU: False, Torch GPU: False
+2026-10-05 07:05:49,752 - disaster_classification - INFO - Cascade setup complete — DRIVE_PATH=/content/drive/MyDrive/NHIS_Project/Project 7/Assets
+2026-10-05 07:05:49,818 - disaster_classification - INFO - [disaster_tweets] Loaded locally: Assets/twitter_disaster.csv
+2026-10-05 07:05:50,126 - disaster_classification - DEBUG - Column structure computed: {'column': {0: 'id', 1: 'keyword', 2: 'location', 3: 'text', 4: 'target'}, 'dtype': {0: 'int64', 1: 'object', 2: 'object', 3: 'object', 4: 'int64'}, 'non_null_count': {0: 7613, 1: 7552, 2: 5079, 3: 7613, 4: 7613}, 'null_count': {0: 0, 1: 61, 2: 2534, 3: 0, 4: 0}}
+2026-10-05 07:05:50,241 - disaster_classification - DEBUG - target_label column created — mapping 0->Non-Disaster, 1->Disaster
+2026-10-05 07:05:50,294 - disaster_classification - INFO - Raw data loaded — shape=(7613, 6), target distribution={'Non-Disaster': 4342, 'Disaster': 3271}
+2026-10-05 07:05:50,427 - disaster_classification - INFO - [disaster_tweets] Duplicate rows found: 52
+2026-10-05 07:05:50,513 - disaster_classification - DEBUG - Dropped 52 exact duplicate rows (id excluded)
+2026-10-05 07:05:50,720 - disaster_classification - DEBUG - Resolved 18 conflicting-label texts, dropped 26 rows
+2026-10-05 07:05:50,776 - disaster_classification - DEBUG - Dropped 45 repeated texts
+2026-10-05 07:05:50,822 - disaster_classification - INFO - Duplicate handling complete — shape=(7490, 6), rows_removed=123
+2026-10-05 07:05:50,865 - disaster_classification - INFO - [disaster_tweets] Missing-value audit: 2 columns affected
+2026-10-05 07:05:50,874 - disaster_classification - DEBUG - Missing-value audit: {'column': {0: 'location', 1: 'keyword'}, 'missing_count': {0: 2476, 1: 56}, 'missing_pct': {0: 33.06, 1: 0.75}}
+2026-10-05 07:05:50,900 - disaster_classification - DEBUG - Missing-value schema check passed — only expected columns (keyword, location) have missing values
+2026-10-05 07:05:50,908 - disaster_classification - DEBUG - Filled missing 'keyword' values with 'unknown'
+2026-10-05 07:05:52,919 - disaster_classification - DEBUG - Named-entity recognition model loaded
+2026-10-05 07:06:55,121 - disaster_classification - DEBUG - NER recovered 412 location values from text
+2026-10-05 07:06:55,209 - disaster_classification - DEBUG - Cast 'keyword' to category dtype — 222 unique values
+2026-10-05 07:06:55,213 - disaster_classification - DEBUG - Cast 'location_source' to category dtype — 3 unique values
+2026-10-05 07:06:55,222 - disaster_classification - DEBUG - Cast 'target_label' to category dtype — 2 unique values
+2026-10-05 07:06:55,303 - disaster_classification - INFO - Post-cleaning validation — nulls=0, label_mismatch=0, repeated_texts=0
+2026-10-05 07:06:55,404 - disaster_classification - INFO - Checkpoint created — df_refined shape=(7490, 7)
+2026-10-05 07:06:56,326 - disaster_classification - DEBUG - Created 'char_count' — mean=100.88, max=157.00
+2026-10-05 07:06:56,329 - disaster_classification - DEBUG - Created 'word_count' — mean=14.88, max=31.00
+2026-10-05 07:06:56,339 - disaster_classification - DEBUG - Created 'avg_word_length' — mean=6.13, max=19.33
+2026-10-05 07:06:56,349 - disaster_classification - DEBUG - Created 'hashtag_count' — mean=0.43, max=13.00
+2026-10-05 07:06:56,355 - disaster_classification - DEBUG - Created 'mention_count' — mean=0.36, max=8.00
+2026-10-05 07:06:56,358 - disaster_classification - DEBUG - Created 'url_count' — mean=0.63, max=4.00
+2026-10-05 07:06:56,362 - disaster_classification - DEBUG - Created 'uppercase_ratio' — mean=0.10, max=1.00
+2026-10-05 07:06:56,367 - disaster_classification - DEBUG - Created 'punctuation_count' — mean=6.83, max=57.00
+2026-10-05 07:06:56,368 - disaster_classification - DEBUG - Created 'digit_count' — mean=2.04, max=39.00
+2026-10-05 07:06:56,502 - disaster_classification - INFO - Structural features complete — df_refined shape=(7490, 16)
+2026-10-05 07:06:58,880 - disaster_classification - DEBUG - Created VADER sentiment scores and sentiment_label columns
+2026-10-05 07:06:58,973 - disaster_classification - DEBUG - Sentiment scores computed: {'count': {'sentiment_neg': 7490, 'sentiment_neu': 7490, 'sentiment_pos': 7490, 'sentiment_compound': 7490}, 'mean': {'sentiment_neg': 0.1486611481975968, 'sentiment_neu': 0.7701941255006677, 'sentiment_pos': 0.08114926568758345, 'sentiment_compound': -0.1439413217623498}, 'std': {'sentiment_neg': 0.16062623723542938, 'sentiment_neu': 0.17918781981074974, 'sentiment_pos': 0.12415981603296854, 'sentiment_compound': 0.4645467305685641}, 'min': {'sentiment_neg': 0.0, 'sentiment_neu': 0.0, 'sentiment_pos': 0.0, 'sentiment_compound': -0.9883}, '25%': {'sentiment_neg': 0.0, 'sentiment_neu': 0.65, 'sentiment_pos': 0.0, 'sentiment_compound': -0.5423}, '50%': {'sentiment_neg': 0.125, 'sentiment_neu': 0.776, 'sentiment_pos': 0.0, 'sentiment_compound': 0.0}, '75%': {'sentiment_neg': 0.253, 'sentiment_neu': 0.914, 'sentiment_pos': 0.148, 'sentiment_compound': 0.0772}, 'max': {'sentiment_neg': 1.0, 'sentiment_neu': 1.0, 'sentiment_pos': 0.901, 'sentiment_compound': 0.973}}
+2026-10-05 07:06:59,036 - disaster_classification - DEBUG - Sentiment label distribution: {'sentiment_label': {0: 'Negative', 1: 'Positive', 2: 'Neutral'}, 'count': {0: 3684, 1: 1934, 2: 1872}, 'pct': {0: 49.19, 1: 25.82, 2: 24.99}}
+2026-10-05 07:06:59,042 - disaster_classification - INFO - Sentiment features complete — df_refined shape=(7490, 21)
+2026-10-05 07:06:59,626 - disaster_classification - DEBUG - disaster_type created — 13 categories
+2026-10-05 07:06:59,684 - disaster_classification - INFO - Disaster-type categorization complete — df_refined shape=(7490, 22)
+2026-10-05 07:07:10,565 - disaster_classification - DEBUG - Tokenization complete — 2 rows produced zero tokens after cleaning
+2026-10-05 07:07:10,641 - disaster_classification - INFO - Text preprocessing complete — df_refined shape=(7490, 24)
+2026-10-05 07:07:10,816 - disaster_classification - INFO - Feature Engineering (Scalar) validation — nulls=0, empty_tokens=2
+2026-10-05 07:07:14,973 - disaster_classification - INFO - Univariate keyword analysis plotted: top 15 keyword frequencies (excl. unknown) with insight summary
+2026-10-05 07:07:16,967 - disaster_classification - INFO - Univariate distribution analysis plotted: class balance, tweet character/word length, and insight summary
+2026-10-05 07:07:48,771 - disaster_classification - INFO - Univariate boxplot grid rendered — outlier severity assessed for all 13 numeric features
+2026-10-05 07:07:48,924 - disaster_classification - INFO - Outlier decision table finalized — capping: ['avg_word_length', 'hashtag_count', 'uppercase_ratio', 'digit_count']
+2026-10-05 07:07:48,998 - disaster_classification - DEBUG - Capped 'avg_word_length' at 99th percentile (11.364) — 73 rows affected
+2026-10-05 07:07:49,022 - disaster_classification - DEBUG - Capped 'hashtag_count' at 99th percentile (5.000) — 56 rows affected
+2026-10-05 07:07:49,085 - disaster_classification - DEBUG - Capped 'uppercase_ratio' at 99th percentile (0.643) — 75 rows affected
+2026-10-05 07:07:49,121 - disaster_classification - DEBUG - Capped 'digit_count' at 99th percentile (12.000) — 73 rows affected
+2026-10-05 07:07:49,166 - disaster_classification - INFO - Outlier treatment complete — capped: ['avg_word_length', 'hashtag_count', 'uppercase_ratio', 'digit_count']
+2026-10-05 07:07:54,932 - disaster_classification - INFO - Post-treatment distributions rendered for capped features
+2026-10-05 07:07:58,698 - disaster_classification - INFO - Univariate disaster_type frequency plotted
+2026-10-05 07:08:02,681 - disaster_classification - INFO - Univariate location analysis plotted — top 15 location frequencies
+2026-10-05 07:08:03,635 - disaster_classification - INFO - Univariate categorical analysis plotted — sentiment label and location source distributions
+2026-10-05 07:08:07,215 - disaster_classification - INFO - Bivariate tweet length distribution analysis plotted
+2026-10-05 07:08:11,280 - disaster_classification - INFO - Bivariate keyword-vs-target chart rendered
+2026-10-05 07:08:13,319 - disaster_classification - INFO - Bivariate hashtag/mention/url presence-rate vs target rendered
+2026-10-05 07:08:16,074 - disaster_classification - INFO - Bivariate sentiment vs target rendered
+2026-10-05 07:08:18,225 - disaster_classification - INFO - Bivariate disaster_type vs target rendered — percentage labels added to stacked segments
+2026-10-05 07:08:21,400 - disaster_classification - INFO - Bivariate sentiment-vs-length scatter rendered
+2026-10-05 07:08:25,378 - disaster_classification - INFO - Multivariate correlation heatmap rendered
+2026-10-05 07:08:25,474 - disaster_classification - INFO - Multivariate correlation with target table rendered
+2026-10-05 07:08:35,312 - disaster_classification - INFO - Multivariate n-gram analysis rendered — top n-grams displayed in descending frequency order
+2026-10-05 07:08:35,790 - disaster_classification - INFO - BoW vectorization complete — shape=(7490, 5000)
+2026-10-05 07:08:36,196 - disaster_classification - INFO - TF-IDF vectorization complete — shape=(7490, 5000)
+2026-10-05 07:08:37,242 - disaster_classification - INFO - TF-IDF+n-grams vectorization complete — shape=(7490, 5000)
+2026-10-05 07:08:39,287 - disaster_classification - INFO - Word2Vec vectorization complete — shape=(7490, 100), zero_vector_rows=9
+2026-10-05 07:11:49,822 - disaster_classification - INFO - GloVe embedding complete — shape=(7490, 25), zero_vector_rows=3
+2026-10-05 07:12:06,913 - disaster_classification - INFO - FastText embedding complete — shape=(7490, 100), zero_vector_rows=2
+2026-10-05 07:14:03,280 - disaster_classification - INFO - YAKE keyword extraction complete — tweets_processed=7,490
+2026-10-05 07:14:03,349 - disaster_classification - INFO - Representation summary completed — BoW, TF-IDF, TF-IDF+n-grams, Word2Vec, GloVe, FastText and YAKE documented.
+2026-10-05 07:14:03,655 - disaster_classification - INFO - Dataset structure checkpoint completed — rows=7,490, columns=25
+2026-10-05 08:22:18,238 - disaster_classification - INFO - Feature inventory checkpoint completed — numeric=14, categorical=5, text_nlp=4
+2026-10-05 08:23:22,415 - disaster_classification - INFO - Data quality checkpoint completed — missing_cells=0, duplicate_rows=0
+2026-10-05 09:20:00,732 - disaster_classification - INFO - Section 5 checkpoint completed — 7,490 tweets represented across sparse, dense and keyword-based NLP approaches.
+2026-10-05 09:21:46,873 - disaster_classification - INFO - Logging initialized -> logs/YS_disaster_classification_2026-10-05.log
+2026-10-05 09:21:47,201 - disaster_classification - INFO - Environment setup complete
+2026-10-05 09:21:47,227 - disaster_classification - INFO - Environment initialized — TF GPU: False, Torch GPU: False
+2026-10-05 09:21:51,235 - disaster_classification - INFO - Cascade setup complete — DRIVE_PATH=/content/drive/MyDrive/NHIS_Project/Project 7/Assets
+2026-10-05 09:21:51,264 - disaster_classification - INFO - [disaster_tweets] Loaded locally: Assets/twitter_disaster.csv
+2026-10-05 09:21:51,447 - disaster_classification - DEBUG - Column structure computed: {'column': {0: 'id', 1: 'keyword', 2: 'location', 3: 'text', 4: 'target'}, 'dtype': {0: 'int64', 1: 'object', 2: 'object', 3: 'object', 4: 'int64'}, 'non_null_count': {0: 7613, 1: 7552, 2: 5079, 3: 7613, 4: 7613}, 'null_count': {0: 0, 1: 61, 2: 2534, 3: 0, 4: 0}}
+2026-10-05 09:21:51,493 - disaster_classification - DEBUG - target_label column created — mapping 0->Non-Disaster, 1->Disaster
+2026-10-05 09:21:51,514 - disaster_classification - INFO - Raw data loaded — shape=(7613, 6), target distribution={'Non-Disaster': 4342, 'Disaster': 3271}
+2026-10-05 09:21:51,585 - disaster_classification - INFO - [disaster_tweets] Duplicate rows found: 52
+2026-10-05 09:21:51,629 - disaster_classification - DEBUG - Dropped 52 exact duplicate rows (id excluded)
+2026-10-05 09:21:51,752 - disaster_classification - DEBUG - Resolved 18 conflicting-label texts, dropped 26 rows
+2026-10-05 09:21:51,786 - disaster_classification - DEBUG - Dropped 45 repeated texts
+2026-10-05 09:21:51,816 - disaster_classification - INFO - Duplicate handling complete — shape=(7490, 6), rows_removed=123
+2026-10-05 09:21:51,844 - disaster_classification - INFO - [disaster_tweets] Missing-value audit: 2 columns affected
+2026-10-05 09:21:51,852 - disaster_classification - DEBUG - Missing-value audit: {'column': {0: 'location', 1: 'keyword'}, 'missing_count': {0: 2476, 1: 56}, 'missing_pct': {0: 33.06, 1: 0.75}}
+2026-10-05 09:21:51,878 - disaster_classification - DEBUG - Missing-value schema check passed — only expected columns (keyword, location) have missing values
+2026-10-05 09:21:51,888 - disaster_classification - DEBUG - Filled missing 'keyword' values with 'unknown'
+2026-10-05 09:21:53,721 - disaster_classification - DEBUG - Named-entity recognition model loaded
+2026-10-05 09:22:21,714 - disaster_classification - DEBUG - NER recovered 412 location values from text
+2026-10-05 09:22:21,764 - disaster_classification - DEBUG - Cast 'keyword' to category dtype — 222 unique values
+2026-10-05 09:22:21,769 - disaster_classification - DEBUG - Cast 'location_source' to category dtype — 3 unique values
+2026-10-05 09:22:21,774 - disaster_classification - DEBUG - Cast 'target_label' to category dtype — 2 unique values
+2026-10-05 09:22:21,818 - disaster_classification - INFO - Post-cleaning validation — nulls=0, label_mismatch=0, repeated_texts=0
+2026-10-05 09:22:21,874 - disaster_classification - INFO - Checkpoint created — df_refined shape=(7490, 7)
+2026-10-05 09:22:22,211 - disaster_classification - DEBUG - Created 'char_count' — mean=100.88, max=157.00
+2026-10-05 09:22:22,212 - disaster_classification - DEBUG - Created 'word_count' — mean=14.88, max=31.00
+2026-10-05 09:22:22,216 - disaster_classification - DEBUG - Created 'avg_word_length' — mean=6.13, max=19.33
+2026-10-05 09:22:22,219 - disaster_classification - DEBUG - Created 'hashtag_count' — mean=0.43, max=13.00
+2026-10-05 09:22:22,223 - disaster_classification - DEBUG - Created 'mention_count' — mean=0.36, max=8.00
+2026-10-05 09:22:22,225 - disaster_classification - DEBUG - Created 'url_count' — mean=0.63, max=4.00
+2026-10-05 09:22:22,226 - disaster_classification - DEBUG - Created 'uppercase_ratio' — mean=0.10, max=1.00
+2026-10-05 09:22:22,229 - disaster_classification - DEBUG - Created 'punctuation_count' — mean=6.83, max=57.00
+2026-10-05 09:22:22,232 - disaster_classification - DEBUG - Created 'digit_count' — mean=2.04, max=39.00
+2026-10-05 09:22:22,293 - disaster_classification - INFO - Structural features complete — df_refined shape=(7490, 16)
+2026-10-05 09:22:22,990 - disaster_classification - DEBUG - Created VADER sentiment scores and sentiment_label columns
+2026-10-05 09:22:23,027 - disaster_classification - DEBUG - Sentiment scores computed: {'count': {'sentiment_neg': 7490, 'sentiment_neu': 7490, 'sentiment_pos': 7490, 'sentiment_compound': 7490}, 'mean': {'sentiment_neg': 0.1486611481975968, 'sentiment_neu': 0.7701941255006677, 'sentiment_pos': 0.08114926568758345, 'sentiment_compound': -0.1439413217623498}, 'std': {'sentiment_neg': 0.16062623723542938, 'sentiment_neu': 0.17918781981074974, 'sentiment_pos': 0.12415981603296854, 'sentiment_compound': 0.4645467305685641}, 'min': {'sentiment_neg': 0.0, 'sentiment_neu': 0.0, 'sentiment_pos': 0.0, 'sentiment_compound': -0.9883}, '25%': {'sentiment_neg': 0.0, 'sentiment_neu': 0.65, 'sentiment_pos': 0.0, 'sentiment_compound': -0.5423}, '50%': {'sentiment_neg': 0.125, 'sentiment_neu': 0.776, 'sentiment_pos': 0.0, 'sentiment_compound': 0.0}, '75%': {'sentiment_neg': 0.253, 'sentiment_neu': 0.914, 'sentiment_pos': 0.148, 'sentiment_compound': 0.0772}, 'max': {'sentiment_neg': 1.0, 'sentiment_neu': 1.0, 'sentiment_pos': 0.901, 'sentiment_compound': 0.973}}
+2026-10-05 09:22:23,059 - disaster_classification - DEBUG - Sentiment label distribution: {'sentiment_label': {0: 'Negative', 1: 'Positive', 2: 'Neutral'}, 'count': {0: 3684, 1: 1934, 2: 1872}, 'pct': {0: 49.19, 1: 25.82, 2: 24.99}}
+2026-10-05 09:22:23,061 - disaster_classification - INFO - Sentiment features complete — df_refined shape=(7490, 21)
+2026-10-05 09:22:23,240 - disaster_classification - DEBUG - disaster_type created — 13 categories
+2026-10-05 09:22:23,252 - disaster_classification - INFO - Disaster-type categorization complete — df_refined shape=(7490, 22)
+2026-10-05 09:22:24,709 - disaster_classification - DEBUG - Tokenization complete — 2 rows produced zero tokens after cleaning
+2026-10-05 09:22:24,724 - disaster_classification - INFO - Text preprocessing complete — df_refined shape=(7490, 24)
+2026-10-05 09:22:24,783 - disaster_classification - INFO - Feature Engineering (Scalar) validation — nulls=0, empty_tokens=2
+2026-10-05 09:22:26,630 - disaster_classification - INFO - Univariate keyword analysis plotted: top 15 keyword frequencies (excl. unknown) with insight summary
+2026-10-05 09:22:27,586 - disaster_classification - INFO - Univariate distribution analysis plotted: class balance, tweet character/word length, and insight summary
+2026-10-05 09:22:44,316 - disaster_classification - INFO - Univariate boxplot grid rendered — outlier severity assessed for all 13 numeric features
+2026-10-05 09:22:44,408 - disaster_classification - INFO - Outlier decision table finalized — capping: ['avg_word_length', 'hashtag_count', 'uppercase_ratio', 'digit_count']
+2026-10-05 09:22:44,443 - disaster_classification - DEBUG - Capped 'avg_word_length' at 99th percentile (11.364) — 73 rows affected
+2026-10-05 09:22:44,455 - disaster_classification - DEBUG - Capped 'hashtag_count' at 99th percentile (5.000) — 56 rows affected
+2026-10-05 09:22:44,467 - disaster_classification - DEBUG - Capped 'uppercase_ratio' at 99th percentile (0.643) — 75 rows affected
+2026-10-05 09:22:44,480 - disaster_classification - DEBUG - Capped 'digit_count' at 99th percentile (12.000) — 73 rows affected
+2026-10-05 09:22:44,491 - disaster_classification - INFO - Outlier treatment complete — capped: ['avg_word_length', 'hashtag_count', 'uppercase_ratio', 'digit_count']
+2026-10-05 09:22:46,588 - disaster_classification - INFO - Post-treatment distributions rendered for capped features
+2026-10-05 09:22:47,515 - disaster_classification - INFO - Univariate disaster_type frequency plotted
+2026-10-05 09:22:48,474 - disaster_classification - INFO - Univariate location analysis plotted — top 15 location frequencies
+2026-10-05 09:22:49,019 - disaster_classification - INFO - Univariate categorical analysis plotted — sentiment label and location source distributions
+2026-10-05 09:22:50,512 - disaster_classification - INFO - Bivariate tweet length distribution analysis plotted
+2026-10-05 09:22:51,622 - disaster_classification - INFO - Bivariate keyword-vs-target chart rendered
+2026-10-05 09:22:52,425 - disaster_classification - INFO - Bivariate hashtag/mention/url presence-rate vs target rendered
+2026-10-05 09:22:53,792 - disaster_classification - INFO - Bivariate sentiment vs target rendered
+2026-10-05 09:22:55,051 - disaster_classification - INFO - Bivariate disaster_type vs target rendered — percentage labels added to stacked segments
+2026-10-05 09:22:56,622 - disaster_classification - INFO - Bivariate sentiment-vs-length scatter rendered
+2026-10-05 09:22:58,337 - disaster_classification - INFO - Multivariate correlation heatmap rendered
+2026-10-05 09:22:58,364 - disaster_classification - INFO - Multivariate correlation with target table rendered
+2026-10-05 09:23:01,487 - disaster_classification - INFO - Multivariate n-gram analysis rendered — top n-grams displayed in descending frequency order
+2026-10-05 09:23:01,658 - disaster_classification - INFO - BoW vectorization complete — shape=(7490, 5000)
+2026-10-05 09:23:01,815 - disaster_classification - INFO - TF-IDF vectorization complete — shape=(7490, 5000)
+2026-10-05 09:23:02,181 - disaster_classification - INFO - TF-IDF+n-grams vectorization complete — shape=(7490, 5000)
+2026-10-05 09:23:03,164 - disaster_classification - INFO - Word2Vec vectorization complete — shape=(7490, 100), zero_vector_rows=9
+2026-10-05 09:24:10,989 - disaster_classification - INFO - GloVe embedding complete — shape=(7490, 25), zero_vector_rows=3
+2026-10-05 09:24:22,081 - disaster_classification - INFO - FastText embedding complete — shape=(7490, 100), zero_vector_rows=2
+2026-10-05 09:25:06,590 - disaster_classification - INFO - YAKE keyword extraction complete — tweets_processed=7,490
+2026-10-05 09:25:06,619 - disaster_classification - INFO - Representation summary completed — BoW, TF-IDF, TF-IDF+n-grams, Word2Vec, GloVe, FastText and YAKE documented.
+2026-10-05 09:25:06,790 - disaster_classification - INFO - Dataset structure checkpoint completed — rows=7,490, columns=25
+2026-10-05 09:25:06,814 - disaster_classification - INFO - Feature inventory checkpoint completed — numeric=14, categorical=5, text_nlp=4
+2026-10-05 09:25:06,848 - disaster_classification - INFO - Data quality checkpoint completed — missing_cells=0, duplicate_rows=0

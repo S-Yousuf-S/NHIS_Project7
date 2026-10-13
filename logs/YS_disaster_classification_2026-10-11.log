@@ -1,0 +1,161 @@
+2026-10-11 20:06:26,531 - disaster_classification - INFO - Logging initialized -> logs/YS_disaster_classification_2026-10-11.log
+2026-10-11 20:09:15,183 - disaster_classification - INFO - Environment setup complete
+2026-10-11 20:09:15,250 - disaster_classification - INFO - Environment initialized — TF GPU: False, Torch GPU: False
+2026-10-11 20:09:19,025 - disaster_classification - WARNING - Google Drive mount failed: Error: credential propagation was unsuccessful
+2026-10-11 20:09:19,068 - disaster_classification - INFO - Persistent storage configuration complete — DRIVE_PATH=None
+2026-10-11 20:09:19,191 - disaster_classification - INFO - [disaster_tweets] Falling back to GitHub: https://raw.githubusercontent.com/S-Yousuf-S/NHIS_Project7/main/Assets/twitter_disaster.csv
+2026-10-11 20:09:20,709 - disaster_classification - DEBUG - [disaster_tweets] Cached local copy: Assets/twitter_disaster.csv
+2026-10-11 20:09:21,013 - disaster_classification - DEBUG - Column structure computed: {'column': {0: 'id', 1: 'keyword', 2: 'location', 3: 'text', 4: 'target'}, 'dtype': {0: 'int64', 1: 'object', 2: 'object', 3: 'object', 4: 'int64'}, 'non_null_count': {0: 7613, 1: 7552, 2: 5079, 3: 7613, 4: 7613}, 'null_count': {0: 0, 1: 61, 2: 2534, 3: 0, 4: 0}}
+2026-10-11 20:09:21,143 - disaster_classification - DEBUG - target_label column created — mapping 0->Non-Disaster, 1->Disaster
+2026-10-11 20:09:21,251 - disaster_classification - INFO - Raw data loaded — shape=(7613, 6), target distribution={'Non-Disaster': 4342, 'Disaster': 3271}
+2026-10-11 20:09:21,475 - disaster_classification - INFO - [disaster_tweets] Duplicate rows found: 52
+2026-10-11 20:09:21,624 - disaster_classification - DEBUG - Dropped 52 exact duplicate rows (id excluded)
+2026-10-11 20:09:22,008 - disaster_classification - DEBUG - Resolved 18 conflicting-label texts, dropped 26 rows
+2026-10-11 20:09:22,092 - disaster_classification - DEBUG - Dropped 45 repeated texts
+2026-10-11 20:09:22,194 - disaster_classification - INFO - Duplicate handling complete — shape=(7490, 6), rows_removed=123
+2026-10-11 20:09:22,288 - disaster_classification - INFO - [disaster_tweets] Missing-value audit: 2 columns affected
+2026-10-11 20:09:22,317 - disaster_classification - DEBUG - Missing-value audit: {'column': {0: 'location', 1: 'keyword'}, 'missing_count': {0: 2476, 1: 56}, 'missing_pct': {0: 33.06, 1: 0.75}}
+2026-10-11 20:09:22,417 - disaster_classification - DEBUG - Missing-value schema check passed — only expected columns (keyword, location) have missing values
+2026-10-11 20:09:22,469 - disaster_classification - DEBUG - Filled missing 'keyword' values with 'unknown'
+2026-10-11 20:09:28,601 - disaster_classification - DEBUG - Named-entity recognition model loaded
+2026-10-11 20:11:33,549 - disaster_classification - DEBUG - NER recovered 412 location values from text
+2026-10-11 20:11:33,638 - disaster_classification - DEBUG - Cast 'keyword' to category dtype — 222 unique values
+2026-10-11 20:11:33,645 - disaster_classification - DEBUG - Cast 'location_source' to category dtype — 3 unique values
+2026-10-11 20:11:33,658 - disaster_classification - DEBUG - Cast 'target_label' to category dtype — 2 unique values
+2026-10-11 20:11:33,776 - disaster_classification - INFO - Post-cleaning validation — nulls=0, label_mismatch=0, repeated_texts=0
+2026-10-11 20:11:33,847 - disaster_classification - INFO - Checkpoint created — df_refined shape=(7490, 7)
+2026-10-11 20:11:35,357 - disaster_classification - DEBUG - Created 'char_count' — mean=100.88, max=157.00
+2026-10-11 20:11:35,371 - disaster_classification - DEBUG - Created 'word_count' — mean=14.88, max=31.00
+2026-10-11 20:11:35,386 - disaster_classification - DEBUG - Created 'avg_word_length' — mean=6.13, max=19.33
+2026-10-11 20:11:35,397 - disaster_classification - DEBUG - Created 'hashtag_count' — mean=0.43, max=13.00
+2026-10-11 20:11:35,405 - disaster_classification - DEBUG - Created 'mention_count' — mean=0.36, max=8.00
+2026-10-11 20:11:35,410 - disaster_classification - DEBUG - Created 'url_count' — mean=0.63, max=4.00
+2026-10-11 20:11:35,415 - disaster_classification - DEBUG - Created 'uppercase_ratio' — mean=0.10, max=1.00
+2026-10-11 20:11:35,421 - disaster_classification - DEBUG - Created 'punctuation_count' — mean=6.83, max=57.00
+2026-10-11 20:11:35,430 - disaster_classification - DEBUG - Created 'digit_count' — mean=2.04, max=39.00
+2026-10-11 20:11:35,538 - disaster_classification - INFO - Structural features complete — df_refined shape=(7490, 16)
+2026-10-11 20:11:41,250 - disaster_classification - DEBUG - Created VADER sentiment scores and sentiment_label columns
+2026-10-11 20:11:41,449 - disaster_classification - DEBUG - Sentiment scores computed: {'count': {'sentiment_neg': 7490, 'sentiment_neu': 7490, 'sentiment_pos': 7490, 'sentiment_compound': 7490}, 'mean': {'sentiment_neg': 0.1486611481975968, 'sentiment_neu': 0.7701941255006677, 'sentiment_pos': 0.08114926568758345, 'sentiment_compound': -0.1439413217623498}, 'std': {'sentiment_neg': 0.16062623723542938, 'sentiment_neu': 0.17918781981074974, 'sentiment_pos': 0.12415981603296854, 'sentiment_compound': 0.4645467305685641}, 'min': {'sentiment_neg': 0.0, 'sentiment_neu': 0.0, 'sentiment_pos': 0.0, 'sentiment_compound': -0.9883}, '25%': {'sentiment_neg': 0.0, 'sentiment_neu': 0.65, 'sentiment_pos': 0.0, 'sentiment_compound': -0.5423}, '50%': {'sentiment_neg': 0.125, 'sentiment_neu': 0.776, 'sentiment_pos': 0.0, 'sentiment_compound': 0.0}, '75%': {'sentiment_neg': 0.253, 'sentiment_neu': 0.914, 'sentiment_pos': 0.148, 'sentiment_compound': 0.0772}, 'max': {'sentiment_neg': 1.0, 'sentiment_neu': 1.0, 'sentiment_pos': 0.901, 'sentiment_compound': 0.973}}
+2026-10-11 20:11:41,621 - disaster_classification - DEBUG - Sentiment label distribution: {'sentiment_label': {0: 'Negative', 1: 'Positive', 2: 'Neutral'}, 'count': {0: 3684, 1: 1934, 2: 1872}, 'pct': {0: 49.19, 1: 25.82, 2: 24.99}}
+2026-10-11 20:11:41,627 - disaster_classification - INFO - Sentiment features complete — df_refined shape=(7490, 21)
+2026-10-11 20:11:42,639 - disaster_classification - DEBUG - disaster_type created — 13 categories
+2026-10-11 20:11:42,671 - disaster_classification - INFO - Disaster-type categorization complete — df_refined shape=(7490, 22)
+2026-10-11 20:12:03,608 - disaster_classification - DEBUG - Tokenization complete — 2 rows produced zero tokens after cleaning
+2026-10-11 20:12:03,730 - disaster_classification - INFO - Text preprocessing complete — df_refined shape=(7490, 24)
+2026-10-11 20:12:04,054 - disaster_classification - INFO - Feature Engineering (Scalar) validation — nulls=0, empty_tokens=2
+2026-10-11 20:12:09,737 - disaster_classification - INFO - Univariate keyword analysis plotted: top 15 keyword frequencies (excl. unknown) with insight summary
+2026-10-11 20:12:12,758 - disaster_classification - INFO - Univariate distribution analysis plotted: class balance, tweet character/word length, and insight summary
+2026-10-11 20:12:57,690 - disaster_classification - INFO - Univariate boxplot grid rendered — outlier severity assessed for all 13 numeric features
+2026-10-11 20:12:57,913 - disaster_classification - INFO - Outlier decision table finalized — capping: ['avg_word_length', 'hashtag_count', 'uppercase_ratio', 'digit_count']
+2026-10-11 20:12:57,983 - disaster_classification - DEBUG - Capped 'avg_word_length' at 99th percentile (11.364) — 73 rows affected
+2026-10-11 20:12:58,008 - disaster_classification - DEBUG - Capped 'hashtag_count' at 99th percentile (5.000) — 56 rows affected
+2026-10-11 20:12:58,034 - disaster_classification - DEBUG - Capped 'uppercase_ratio' at 99th percentile (0.643) — 75 rows affected
+2026-10-11 20:12:58,058 - disaster_classification - DEBUG - Capped 'digit_count' at 99th percentile (12.000) — 73 rows affected
+2026-10-11 20:12:58,099 - disaster_classification - INFO - Outlier treatment complete — capped: ['avg_word_length', 'hashtag_count', 'uppercase_ratio', 'digit_count']
+2026-10-11 20:13:08,883 - disaster_classification - INFO - Post-treatment distributions rendered for capped features
+2026-10-11 20:13:11,079 - disaster_classification - INFO - Univariate disaster_type frequency plotted
+2026-10-11 20:13:13,797 - disaster_classification - INFO - Univariate location analysis plotted — top 15 location frequencies
+2026-10-11 20:13:15,946 - disaster_classification - INFO - Univariate categorical analysis plotted — sentiment label and location source distributions
+2026-10-11 20:13:22,309 - disaster_classification - INFO - Bivariate tweet length distribution analysis plotted
+2026-10-11 20:13:25,368 - disaster_classification - INFO - Bivariate keyword-vs-target chart rendered
+2026-10-11 20:13:30,265 - disaster_classification - INFO - Bivariate hashtag/mention/url presence-rate vs target rendered
+2026-10-11 20:13:37,198 - disaster_classification - INFO - Bivariate sentiment vs target rendered
+2026-10-11 20:13:39,663 - disaster_classification - INFO - Bivariate disaster_type vs target rendered — percentage labels added to stacked segments
+2026-10-11 20:13:45,474 - disaster_classification - INFO - Bivariate sentiment-vs-length scatter rendered
+2026-10-11 20:13:59,959 - disaster_classification - INFO - Multivariate correlation heatmap rendered
+2026-10-11 20:14:00,053 - disaster_classification - INFO - Multivariate correlation with target table rendered
+2026-10-11 20:14:09,745 - disaster_classification - INFO - Multivariate n-gram analysis rendered — top n-grams displayed in descending frequency order
+2026-10-11 20:14:10,648 - disaster_classification - INFO - BoW vectorization complete — shape=(7490, 5000)
+2026-10-11 20:14:11,344 - disaster_classification - INFO - TF-IDF vectorization complete — shape=(7490, 5000)
+2026-10-11 20:14:14,986 - disaster_classification - INFO - TF-IDF+n-grams vectorization complete — shape=(7490, 5000)
+2026-10-11 20:14:19,108 - disaster_classification - INFO - Word2Vec vectorization complete — shape=(7490, 100), zero_vector_rows=9
+2026-10-11 20:18:36,109 - disaster_classification - INFO - GloVe embedding complete — shape=(7490, 25), zero_vector_rows=3
+2026-10-11 20:18:56,361 - disaster_classification - INFO - FastText embedding complete — shape=(7490, 100), zero_vector_rows=2
+2026-10-11 20:20:44,949 - disaster_classification - INFO - YAKE keyword extraction complete — tweets_processed=7,490
+2026-10-11 20:20:44,995 - disaster_classification - INFO - Representation summary completed — BoW, TF-IDF, TF-IDF+n-grams, Word2Vec, GloVe, FastText and YAKE documented.
+2026-10-11 20:20:45,233 - disaster_classification - INFO - Dataset structure checkpoint completed — rows=7,490, columns=25
+2026-10-11 20:20:45,261 - disaster_classification - INFO - Feature inventory checkpoint completed — numeric=13, categorical=4, text_nlp=4
+2026-10-11 20:20:45,305 - disaster_classification - INFO - Data quality checkpoint completed — missing_cells=0, duplicate_rows=0
+2026-10-11 20:20:45,385 - disaster_classification - INFO - Stratified train/test split completed — total=7,490, train=5,992, test=1,498, test_size=20%, random_state=42
+2026-10-11 20:21:00,595 - disaster_classification - INFO - Leakage controls applied — all vectorizers/embeddings refit on X_train
+2026-10-11 20:21:00,642 - disaster_classification - INFO - Categorical encoding complete — columns=['disaster_type', 'location_source'], output_dim=16
+2026-10-11 20:21:00,675 - disaster_classification - INFO - Structured feature assembly completed — numeric_features=13, categorical_encoded_features=16, train_shape=(5992, 29), test_shape=(1498, 29)
+2026-10-11 20:21:00,893 - disaster_classification - INFO - Found GitHub artifact: https://raw.githubusercontent.com/S-Yousuf-S/NHIS_Project7/main/Assets/models/classical_baseline_results_20261007_204132.pkl
+2026-10-11 20:21:01,097 - disaster_classification - INFO - Cached GitHub artifact locally: Assets/models/classical_baseline_results_20261007_204132.pkl
+2026-10-11 20:21:01,160 - disaster_classification - INFO - Loaded cached classical baseline artifact — best_model=Logistic Regression
+2026-10-11 20:21:01,186 - disaster_classification - INFO - Classical baseline results ready — best_model=Logistic Regression, cv_accuracy=0.8041, cv_f1=0.7462
+2026-10-11 20:21:01,442 - disaster_classification - INFO - Found GitHub artifact: https://raw.githubusercontent.com/S-Yousuf-S/NHIS_Project7/main/Assets/models/dense_embedding_results_20261007_204621.pkl
+2026-10-11 20:21:01,751 - disaster_classification - INFO - Cached GitHub artifact locally: Assets/models/dense_embedding_results_20261007_204621.pkl
+2026-10-11 20:21:01,794 - disaster_classification - INFO - Loaded cached dense embedding artifact — best_model=GloVe + LightGBM, embedding=GloVe
+2026-10-11 20:21:01,816 - disaster_classification - INFO - Dense embedding results ready — best_model=GloVe + LightGBM, embedding=GloVe, cv_accuracy=0.7981, cv_f1=0.7488
+2026-10-11 20:21:02,024 - disaster_classification - INFO - Found GitHub artifact: https://raw.githubusercontent.com/S-Yousuf-S/NHIS_Project7/main/Assets/models/feature_enhanced_results_20261007_205317.pkl
+2026-10-11 20:21:02,174 - disaster_classification - INFO - Cached GitHub artifact locally: Assets/models/feature_enhanced_results_20261007_205317.pkl
+2026-10-11 20:21:02,182 - disaster_classification - INFO - Loaded cached feature-enhanced artifact — best_model=TF-IDF + Logistic Regression
+2026-10-11 20:21:02,196 - disaster_classification - INFO - Feature-enhanced results ready — best_model=TF-IDF + Logistic Regression, cv_accuracy=0.8034, cv_f1=0.7400
+2026-10-11 20:21:02,326 - disaster_classification - INFO - Found GitHub artifact: https://raw.githubusercontent.com/S-Yousuf-S/NHIS_Project7/main/Assets/models/yake_enhanced_results_20261007_205325.pkl
+2026-10-11 20:21:02,781 - disaster_classification - INFO - Cached GitHub artifact locally: Assets/models/yake_enhanced_results_20261007_205325.pkl
+2026-10-11 20:21:02,811 - disaster_classification - INFO - Loaded cached YAKE-enhanced artifact — best_model=TF-IDF + YAKE Keywords + Logistic Regression
+2026-10-11 20:21:02,820 - disaster_classification - INFO - YAKE-enhanced results ready — model=TF-IDF + YAKE Keywords + Logistic Regression, cv_accuracy=0.7946, cv_f1=0.7362
+2026-10-11 20:21:03,214 - disaster_classification - INFO - BiLSTM preparation complete | Vocabulary size: 11175 | Maximum sequence length: 14 | Fit shape: (5093, 14) | Validation shape: (899, 14) | Test shape: (1498, 14)
+2026-10-11 20:21:03,332 - disaster_classification - INFO - Found GitHub artifact: https://raw.githubusercontent.com/S-Yousuf-S/NHIS_Project7/main/Assets/models/bilstm_model_20261007_205348.keras
+2026-10-11 20:21:03,731 - disaster_classification - INFO - Cached GitHub artifact locally: Assets/models/bilstm_model_20261007_205348.keras
+2026-10-11 20:21:04,272 - disaster_classification - INFO - BiLSTM serialized model loaded successfully; training skipped.
+2026-10-11 20:21:04,274 - disaster_classification - INFO - BiLSTM model ready. Source: existing serialized model
+2026-10-11 20:21:04,407 - disaster_classification - INFO - Found GitHub artifact: https://raw.githubusercontent.com/S-Yousuf-S/NHIS_Project7/main/Assets/models/bilstm_training_history_20261007_222035.pkl
+2026-10-11 20:21:04,548 - disaster_classification - INFO - Cached GitHub artifact locally: Assets/models/bilstm_training_history_20261007_222035.pkl
+2026-10-11 20:21:04,550 - disaster_classification - INFO - BiLSTM training history loaded from the Local → Drive cascade.
+2026-10-11 20:21:04,566 - disaster_classification - INFO - BiLSTM training results ready — epochs=5, best_epoch=2, best_val_accuracy=0.7931, best_val_loss=0.4744
+2026-10-11 20:21:07,093 - disaster_classification - INFO - BiLSTM model released from memory and TensorFlow/Keras resources cleared before DistilBERT training.
+2026-10-11 20:21:07,094 - disaster_classification - INFO - CUDA unavailable. DistilBERT will run on CPU.
+2026-10-11 20:21:07,117 - disaster_classification - INFO - DistilBERT hardware configuration — device=CPU, FP16=disabled, batch_size=8
+2026-10-11 20:21:17,125 - disaster_classification - WARNING - HF_TOKEN was not available. DistilBERT can still train, but Hugging Face persistence will be unavailable.
+2026-10-11 20:21:28,706 - disaster_classification - INFO - DistilBERT preparation complete | Training 5093 | Validation 899 | Test 1498 | Max sequence 128
+2026-10-11 20:21:28,738 - disaster_classification - INFO - No complete DistilBERT artifact at the local directory root; skipping local restoration.
+2026-10-11 20:21:28,739 - disaster_classification - INFO - Loading DistilBERT from Hugging Face Hub: ysakkaf/nhis-project7-distilbert
+2026-10-11 20:21:32,384 - disaster_classification - INFO - Existing fine-tuned DistilBERT model restored. Training must be skipped.
+2026-10-11 20:21:32,407 - disaster_classification - INFO - Existing fine-tuned DistilBERT restored. Training and uploading skipped.
+2026-10-11 20:21:32,424 - disaster_classification - INFO - No new DistilBERT training history to save. The existing persisted history will be retained.
+2026-10-11 20:21:32,532 - disaster_classification - INFO - Found GitHub artifact: https://raw.githubusercontent.com/S-Yousuf-S/NHIS_Project7/main/Assets/models/distilbert_training_history_20261008_211039.pkl
+2026-10-11 20:21:32,678 - disaster_classification - INFO - Cached GitHub artifact locally: Assets/models/distilbert_training_history_20261008_211039.pkl
+2026-10-11 20:21:32,679 - disaster_classification - INFO - Retrieved DistilBERT training history from the available persistence cascade.
+2026-10-11 20:21:32,732 - disaster_classification - INFO - DistilBERT history summary ready — epochs=4, best_epoch=2, best_val_accuracy=0.8209, best_val_f1=0.7785
+2026-10-11 20:21:32,765 - disaster_classification - INFO - Found existing local artifact: Assets/models/classical_baseline_results_20261007_204132.pkl
+2026-10-11 20:21:32,816 - disaster_classification - INFO - Found existing local artifact: Assets/models/dense_embedding_results_20261007_204621.pkl
+2026-10-11 20:21:32,831 - disaster_classification - INFO - Found existing local artifact: Assets/models/feature_enhanced_results_20261007_205317.pkl
+2026-10-11 20:21:32,835 - disaster_classification - INFO - Found existing local artifact: Assets/models/yake_enhanced_results_20261007_205325.pkl
+2026-10-11 20:21:32,996 - disaster_classification - INFO - Finalist registry ready — finalists=6, test_rows=1,498, bilstm_source=Local, distilbert_source=Drive / Hugging Face Hub
+2026-10-11 20:21:33,161 - disaster_classification - INFO - No existing artifact found for test_predictions across Local, Drive, or GitHub.
+2026-10-11 20:21:33,378 - disaster_classification - INFO - Found existing local artifact: Assets/models/bilstm_model_20261007_205348.keras
+2026-10-11 20:21:36,371 - disaster_classification - INFO - BiLSTM scored on test inputs — restore check validation accuracy=0.7931, source=Local / cascade
+2026-10-11 20:22:57,168 - disaster_classification - INFO - DistilBERT scored on test inputs — restore check validation accuracy=0.8209, source=Hugging Face Hub
+2026-10-11 20:22:57,173 - disaster_classification - INFO - Saved model artifact locally: Assets/models/test_predictions_20261011_202257.pkl
+2026-10-11 20:22:57,182 - disaster_classification - INFO - Test predictions ready — finalists=6, rows=1,498, reused_cache=False
+2026-10-11 20:22:57,257 - disaster_classification - INFO - Test metrics ready — selected=DistilBERT, accuracy=0.8144, f1=0.7718, margin_over_runner_up=0.0100
+2026-10-11 20:23:00,086 - disaster_classification - INFO - Confusion matrices rendered — selected=DistilBERT, fn=168, fp=110
+2026-10-11 20:23:01,208 - disaster_classification - INFO - ROC curves rendered — best_auc=DistilBERT
+2026-10-11 20:23:02,345 - disaster_classification - INFO - PR curves rendered — best_ap=DistilBERT
+2026-10-11 20:23:02,417 - disaster_classification - INFO - Selection-vs-test gap computed — selected_gap=-0.0065
+2026-10-11 20:23:03,452 - disaster_classification - INFO - Loss curves rendered — models=['BiLSTM', 'DistilBERT']
+2026-10-11 20:23:03,588 - disaster_classification - INFO - Bootstrap CI — acc=[0.7937, 0.8344], diff=[-0.0053, +0.0260], share_ge=0.908
+2026-10-11 20:23:04,740 - disaster_classification - INFO - Bootstrap accuracy plot rendered.
+2026-10-11 20:27:23,085 - disaster_classification - INFO - Robustness check — worst=Word dropout (20% of words) (-0.0140)
+2026-10-11 20:27:23,684 - disaster_classification - INFO - Robustness plot rendered.
+2026-10-11 20:27:23,716 - disaster_classification - INFO - Validation verdict — {'Selection-to-test gap within tolerance': 'Pass', 'Lead over Logistic Regression statistically clear (95% CI excludes zero)': 'Near-tie', 'Accuracy drop under every perturbation within 0.02': 'Pass'}
+2026-10-11 20:27:24,968 - disaster_classification - INFO - Final comparison generated — selected=DistilBERT, test_accuracy=0.8144, test_f1=0.7718
+2026-10-11 20:27:24,996 - disaster_classification - INFO - Consolidated table ready — rows=6
+2026-10-11 20:27:25,022 - disaster_classification - INFO - Winner declared — DistilBERT, leads=['Accuracy', 'F1', 'Recall', 'ROC AUC', 'Average Precision']
+2026-10-11 20:27:25,048 - disaster_classification - INFO - Unsure-band check — share=0.011
+2026-10-11 20:51:28,772 - disaster_classification - INFO - No complete DistilBERT artifact at the local directory root; skipping local restoration.
+2026-10-11 20:51:28,777 - disaster_classification - INFO - Loading DistilBERT from Hugging Face Hub: ysakkaf/nhis-project7-distilbert-raw
+2026-10-11 20:51:28,977 - disaster_classification - WARNING - Hugging Face DistilBERT loading failed: ysakkaf/nhis-project7-distilbert-raw is not a local folder and is not a valid model identifier listed on 'https://huggingface.co/models'
+If this is a private repository, make sure to pass a token having permission to this repo either by logging in with `hf auth login` or by passing `token=<your_token>`
+2026-10-11 20:51:28,986 - disaster_classification - INFO - No persistent DistilBERT model found across Local, Drive, or Hugging Face.
+2026-10-11 20:51:31,036 - disaster_classification - INFO - Trial DistilBERT training started (a CPU run can take a long time; it is saved when finished).
+2026-10-11 22:02:59,116 - disaster_classification - INFO - DistilBERT model and tokenizer saved locally: Assets/models/distilbert_raw_model
+2026-10-11 22:02:59,267 - disaster_classification - ERROR - DistilBERT Hugging Face upload failed: 401 Client Error: Unauthorized for url: https://huggingface.co/api/repos/create (Request ID: Root=1-6acc0793-57936edf59188cff1dcbce30;41d79e1c-9f1b-4c65-9db7-39e1f66a314f)
+
+Invalid username or password.
+2026-10-11 22:02:59,276 - disaster_classification - INFO - Saved model artifact locally: Assets/models/distilbert_raw_training_history_20261011_220259.pkl
+2026-10-11 22:37:34,946 - disaster_classification - INFO - Saved model artifact locally: Assets/models/final_evaluation_bundle_20261011_223734.pkl
+2026-10-11 22:37:34,948 - disaster_classification - INFO - Found existing local artifact: Assets/models/final_evaluation_bundle_20261011_223734.pkl
+2026-10-11 22:37:34,973 - disaster_classification - INFO - Final bundle serialised — verified=True

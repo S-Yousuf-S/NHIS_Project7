@@ -1,0 +1,37 @@
+2026-09-28 21:16:20,910 - disaster_classification - INFO - Logging initialized -> logs/YS_disaster_classification_2026-09-28.log
+2026-09-28 21:17:09,453 - disaster_classification - INFO - Environment setup complete
+2026-09-28 21:17:09,465 - disaster_classification - INFO - Environment initialized — TF GPU: False, Torch GPU: False
+2026-09-28 21:17:13,721 - disaster_classification - INFO - Cascade setup complete — DRIVE_PATH=/content/drive/MyDrive/NHIS_Project/Project 7/Assets
+2026-09-28 21:17:13,737 - disaster_classification - INFO - [disaster_tweets] Falling back to GitHub: https://raw.githubusercontent.com/S-Yousuf-S/NHIS_Project7/main/Assets/twitter_disaster.csv
+2026-09-28 21:17:14,601 - disaster_classification - DEBUG - [disaster_tweets] Cached local copy: Assets/twitter_disaster.csv
+2026-09-28 21:17:14,653 - disaster_classification - DEBUG - Column structure computed: {'column': {0: 'id', 1: 'keyword', 2: 'location', 3: 'text', 4: 'target'}, 'dtype': {0: 'int64', 1: 'object', 2: 'object', 3: 'object', 4: 'int64'}, 'non_null_count': {0: 7613, 1: 7552, 2: 5079, 3: 7613, 4: 7613}, 'null_count': {0: 0, 1: 61, 2: 2534, 3: 0, 4: 0}}
+2026-09-28 21:17:14,688 - disaster_classification - DEBUG - target_label column created — mapping 0->Non-Disaster, 1->Disaster
+2026-09-28 21:17:14,713 - disaster_classification - INFO - Raw data loaded — shape=(7613, 6), target distribution={'Non-Disaster': 4342, 'Disaster': 3271}
+2026-09-28 21:17:14,763 - disaster_classification - INFO - [disaster_tweets] Duplicate rows found: 52
+2026-09-28 21:17:14,786 - disaster_classification - DEBUG - Dropped 52 exact duplicate rows (id excluded)
+2026-09-28 21:17:14,886 - disaster_classification - DEBUG - Resolved 18 conflicting-label texts, dropped 26 rows
+2026-09-28 21:17:14,899 - disaster_classification - DEBUG - Dropped 45 repeated texts
+2026-09-28 21:17:14,909 - disaster_classification - INFO - Duplicate handling complete — shape=(7490, 6), rows_removed=123
+2026-09-28 21:17:14,925 - disaster_classification - INFO - [disaster_tweets] Missing-value audit: 2 columns affected
+2026-09-28 21:17:14,929 - disaster_classification - DEBUG - Missing-value audit: {'column': {0: 'location', 1: 'keyword'}, 'missing_count': {0: 2476, 1: 56}, 'missing_pct': {0: 33.06, 1: 0.75}}
+2026-09-28 21:17:14,963 - disaster_classification - DEBUG - Filled missing 'keyword' values with 'unknown'
+2026-09-28 21:17:16,735 - disaster_classification - DEBUG - Named-entity recognition model loaded
+2026-09-28 21:17:48,489 - disaster_classification - DEBUG - NER recovered 412 location values from text
+2026-09-28 21:17:48,542 - disaster_classification - DEBUG - Cast 'keyword' to category dtype — 222 unique values
+2026-09-28 21:17:48,545 - disaster_classification - DEBUG - Cast 'location_source' to category dtype — 3 unique values
+2026-09-28 21:17:48,552 - disaster_classification - DEBUG - Cast 'target_label' to category dtype — 2 unique values
+2026-09-28 21:17:48,622 - disaster_classification - INFO - Post-cleaning validation — nulls=0, label_mismatch=0, repeated_texts=0
+2026-09-28 21:17:48,669 - disaster_classification - INFO - Checkpoint created — df_refined shape=(7490, 7)
+2026-09-28 21:17:49,397 - disaster_classification - DEBUG - Created 'char_count' — mean=100.88, max=157.00
+2026-09-28 21:17:49,401 - disaster_classification - DEBUG - Created 'word_count' — mean=14.88, max=31.00
+2026-09-28 21:17:49,405 - disaster_classification - DEBUG - Created 'avg_word_length' — mean=6.13, max=19.33
+2026-09-28 21:17:49,413 - disaster_classification - DEBUG - Created 'hashtag_count' — mean=0.43, max=13.00
+2026-09-28 21:17:49,417 - disaster_classification - DEBUG - Created 'mention_count' — mean=0.36, max=8.00
+2026-09-28 21:17:49,421 - disaster_classification - DEBUG - Created 'url_count' — mean=0.63, max=4.00
+2026-09-28 21:17:49,425 - disaster_classification - DEBUG - Created 'uppercase_ratio' — mean=0.10, max=1.00
+2026-09-28 21:17:49,433 - disaster_classification - DEBUG - Created 'punctuation_count' — mean=6.83, max=57.00
+2026-09-28 21:17:49,438 - disaster_classification - DEBUG - Created 'digit_count' — mean=2.04, max=39.00
+2026-09-28 21:17:49,533 - disaster_classification - INFO - Structural features complete — df_refined shape=(7490, 16)
+2026-09-28 21:17:51,095 - disaster_classification - DEBUG - Created VADER sentiment scores and sentiment_label
+2026-09-28 21:17:51,151 - disaster_classification - DEBUG - Sentiment features computed: {'count': {'sentiment_neg': 7490, 'sentiment_neu': 7490, 'sentiment_pos': 7490, 'sentiment_compound': 7490}, 'mean': {'sentiment_neg': 0.1486611481975968, 'sentiment_neu': 0.7701941255006677, 'sentiment_pos': 0.08114926568758345, 'sentiment_compound': -0.1439413217623498}, 'std': {'sentiment_neg': 0.16062623723542938, 'sentiment_neu': 0.17918781981074974, 'sentiment_pos': 0.12415981603296854, 'sentiment_compound': 0.4645467305685641}, 'min': {'sentiment_neg': 0.0, 'sentiment_neu': 0.0, 'sentiment_pos': 0.0, 'sentiment_compound': -0.9883}, '25%': {'sentiment_neg': 0.0, 'sentiment_neu': 0.65, 'sentiment_pos': 0.0, 'sentiment_compound': -0.5423}, '50%': {'sentiment_neg': 0.125, 'sentiment_neu': 0.776, 'sentiment_pos': 0.0, 'sentiment_compound': 0.0}, '75%': {'sentiment_neg': 0.253, 'sentiment_neu': 0.914, 'sentiment_pos': 0.148, 'sentiment_compound': 0.0772}, 'max': {'sentiment_neg': 1.0, 'sentiment_neu': 1.0, 'sentiment_pos': 0.901, 'sentiment_compound': 0.973}}
+2026-09-28 21:17:51,196 - disaster_classification - INFO - Sentiment features complete — df_refined shape=(7490, 21)
