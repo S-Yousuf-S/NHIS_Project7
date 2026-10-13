@@ -361,9 +361,9 @@ It builds on third-party work that keeps its own licence:
 | Component | Used for | Licence |
 |---|---|---|
 | **DistilBERT** (`distilbert-base-uncased`, Hugging Face) | Starting point for the fine-tuned model | Apache License 2.0 |
-| **GloVe Twitter embeddings** (Stanford NLP, via Gensim) | Dense word representations | Public Domain Dedication and License (PDDL) |
+| **GloVe Twitter embeddings** (Stanford NLP, via Gensim) | Dense word representations | Published by Stanford NLP for public use — see the GloVe project page for its terms |
 | **Open-source libraries** (scikit-learn, TensorFlow, PyTorch, Transformers, Streamlit, and others) | Modelling and dashboard | Each library's own licence (mostly BSD, MIT or Apache 2.0) |
-| **Tweet dataset** (`twitter_disaster.csv`) | Training and evaluation | [ADD THE DATASET SOURCE AND ITS TERMS OF USE HERE] |
+| **Tweet dataset** (`twitter_disaster.csv`) | Training and evaluation | Supplied with the project brief of the NHIS data science programme |
 
 The fine-tuned DistilBERT weights are a derivative of the Apache-2.0 base model and are hosted on Hugging Face under the same terms. The tweets in the dataset belong to their original authors and are used here only for learning and evaluation.
 
