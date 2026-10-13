@@ -2,7 +2,6 @@
 ### *Telling Real Emergency Reports from Everyday Language — From Raw Tweets to a Live Checking Dashboard*
 
 ![Python](https://img.shields.io/badge/Language-Python%203.10+-blue)
-![Notebook](https://img.shields.io/badge/Environment-Google%20Colab-orange)
 ![Domain](https://img.shields.io/badge/Domain-NLP%20%2F%20Text%20Classification-blueviolet)
 ![Dataset](https://img.shields.io/badge/Tweets-7%2C613-teal)
 ![Model](https://img.shields.io/badge/Selected%20Model-DistilBERT-crimson)
