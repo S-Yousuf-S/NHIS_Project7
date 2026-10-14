@@ -7,8 +7,8 @@
  Description  : Streamlit dashboard for the selected model (DistilBERT). A user
                 types or pastes an English message (up to 280 characters) and
                 the app says whether it reads like a real disaster report, an
-                everyday message, or whether the model is not sure. A collapsed
-                section shows how well the model performed on held-out tweets.
+                everyday message, or whether the model is not sure. The user can
+                also pick one of eight ready-made examples from a dropdown.
  Run          : streamlit run disaster_tweet_dashboard.py
 ================================================================================
 """
@@ -39,11 +39,20 @@ SHORT_MESSAGE_WORDS = 3               # fewer cleaned words than this -> reliabi
 BLUE, NAVY, TEAL, CORAL, AMBER = "#1D6FD8", "#12355B", "#14B8A6", "#F2545B", "#F5A623"
 INK, MUTED, LINE = "#1B2B3A", "#5B6B7B", "#E3ECF6"
 
+# Eight examples shown in the dropdown (3 disaster, 3 not a disaster, 2 "Not sure"), mixed in order.
+# The dropdown shows only the text, so the learner is not told the answer in advance.
+# Every example was checked with the deployed model: chances in the comments (saved model).
 EXAMPLES = [
-    ("Disaster", "Wildfire spreading fast near the highway, evacuations ordered"),
-    ("Not a disaster", "She danced like a fire on stage."),
-    ("Not sure", "Ready for this storm"),
+    "Wildfire spreading fast near the highway, evacuations ordered",   # 99% -> disaster
+    "The students dance performance rocked the atmosphere",             # 4%  -> not a disaster
+    "Ready for this storm",                                             # 49% -> not sure
+    "Flood waters rising in the city, rescue boats are on the way",     # 99% -> disaster
+    "She danced like a fire",                                           # 18% -> not a disaster
+    "FATALITY!",                                                        # 54% -> not sure
+    "Earthquake of magnitude 6.1 strikes off the coast, buildings collapsed",  # 99% -> disaster
+    "This new song is fire, I have it on repeat",                       # 9%  -> not a disaster
 ]
+EXAMPLE_PROMPT = "Select an example…"
 
 LOGO_FILE = os.path.join(ASSETS_DIR, "logo_canary.png")
 st.set_page_config(
@@ -282,6 +291,19 @@ def set_example(text):
         st.session_state["result"] = {"error": str(exc)}
 
 
+def pick_example():
+    """Dropdown callback: run the check as soon as an example is selected."""
+    chosen = st.session_state.get("example_pick")
+    if chosen:
+        set_example(chosen)
+
+
+def on_check_click():
+    """If the learner typed their own text, clear the dropdown so it does not look like an example is active."""
+    if st.session_state.get("tweet_text", "").strip() != (st.session_state.get("example_pick") or ""):
+        st.session_state["example_pick"] = None
+
+
 def run_check(raw_text):
     """Clean, score and store the result of one check in session state."""
     text = raw_text.strip()
@@ -324,9 +346,9 @@ with st.sidebar:
     <div class="sb-sec">
       <h4>HOW TO USE IT</h4>
       <ol>
-        <li>Type or paste a message in English (up to {MAX_CHARS} characters), or tap an example.</li>
-        <li>Press <b>Check message</b>.</li>
-        <li>Read the answer and the likelihood bar.</li>
+        <li>Select an example from the dropdown, or type your own message in English (up to {MAX_CHARS} characters).</li>
+        <li>Press <b>Check message</b>. Examples are checked as soon as you select them.</li>
+        <li>The answer appears on the right, with a bar showing the chance (from 0% to 100%) that the message describes a real disaster.</li>
       </ol>
     </div>
 
@@ -367,7 +389,6 @@ st.markdown(flat(f"""
     {LOGO_TAG}
     <div>
         <h1>Disaster Tweet Checker</h1>
-        <p>Is this message about a real emergency? Paste it below and find out in seconds.</p>
     </div>
 </div>
 """), unsafe_allow_html=True)
@@ -393,16 +414,10 @@ with col_in:
         st.markdown('<p class="card-title">Enter a message</p>'
                     f'<p class="card-sub">English only, up to {MAX_CHARS} characters, like a tweet.</p>',
                     unsafe_allow_html=True)
-        st.markdown('<p class="card-sub" style="margin-bottom:6px;">Try an example, or type your own below:</p>',
-                    unsafe_allow_html=True)
-        for row_start in range(0, len(EXAMPLES), 3):
-            row_cols = st.columns(3)
-            for offset, col in enumerate(row_cols):
-                idx = row_start + offset
-                if idx < len(EXAMPLES):
-                    label, text = EXAMPLES[idx]
-                    col.button(label, key=f"example_{idx}", on_click=set_example, args=(text,),
-                               use_container_width=True)
+        st.markdown('<p class="card-sub" style="margin-bottom:6px;">Select an example from the dropdown, '
+                    'or type your own message below:</p>', unsafe_allow_html=True)
+        st.selectbox("Examples", EXAMPLES, index=None, placeholder=EXAMPLE_PROMPT, key="example_pick",
+                     on_change=pick_example, label_visibility="collapsed")
 
         # A form commits the text and the click together, so one press of the button (or Ctrl+Enter) always works
         with st.form("check_form", border=False):
@@ -411,7 +426,8 @@ with col_in:
                 placeholder="e.g. Flood waters rising in the city, rescue boats are on the way…",
                 label_visibility="collapsed",
             )
-            check_clicked = st.form_submit_button("Check message", type="primary", use_container_width=True)
+            check_clicked = st.form_submit_button("Check message", type="primary", use_container_width=True,
+                                                  on_click=on_check_click)
 
 # ------------------------------------------------------------------------------
 # Run the check
@@ -442,10 +458,10 @@ with col_out:
         if result is None:
             st.markdown(flat(f"""
             <div class="placeholder"><svg width="84" height="84" viewBox="0 0 84 84" fill="none"><rect x="8" y="10" width="68" height="46" rx="14" fill="#EAF3FF" stroke="#1D6FD8" stroke-width="3" stroke-dasharray="6 5"/><path d="M26 56 v14 l16 -14 z" fill="#EAF3FF" stroke="#1D6FD8" stroke-width="3" stroke-linejoin="round"/><circle cx="30" cy="33" r="4.5" fill="#14B8A6"/><circle cx="42" cy="33" r="4.5" fill="#1D6FD8"/><circle cx="54" cy="33" r="4.5" fill="#F2545B"/></svg><br><b>Your result will appear here</b><br>
-            Enter a message and press <b>Check message</b>.</div>"""), unsafe_allow_html=True)
+            Select an example or enter your own message, then press <b>Check message</b>.</div>"""), unsafe_allow_html=True)
 
         elif result.get("empty"):
-            st.info("Please type or paste a message first, or tap one of the examples.")
+            st.info("Please select an example or type your own message first.")
 
         elif "error" in result:
             st.error("Something went wrong while loading the AI. Please try again in a moment.")
@@ -483,11 +499,6 @@ with col_out:
             for n in notes:
                 st.markdown(f'<div class="note">{n}</div>', unsafe_allow_html=True)
 
-            with st.expander("What did the AI actually read?"):
-                st.write("Before the AI reads a message, links, @mentions, numbers, symbols and very common words "
-                         "are removed, and words are simplified to their base form. This is the version it saw:")
-                st.code(result["cleaned"], language=None)
-
         history = st.session_state.get("history", [])
         if len(history) > 1:
             st.markdown('<p class="card-sub" style="margin-top:16px;"><b>Recent checks</b></p>', unsafe_allow_html=True)
@@ -498,50 +509,6 @@ with col_out:
             )
             st.markdown(rows, unsafe_allow_html=True)
 
-# ------------------------------------------------------------------------------
-# How well does it work?
-# ------------------------------------------------------------------------------
 st.write("")
-with st.expander("How it works"):
-    if bundle is None:
-        st.info("Test results are not available in this copy of the app.")
-    else:
-        metrics = bundle["test_metrics"].sort_values("Rank").reset_index(drop=True)
-        best = metrics.iloc[0]
-        st.markdown(
-            f"We kept **{bundle['n_test']:,} tweets** hidden while building the AI, then used them as a final exam. "
-            f"These are the results for the chosen model, **{bundle['selected_model_name']}**, a compact AI that reads "
-            "whole sentences in context."
-        )
-        k1, k2, k3, k4 = st.columns(4)
-        for col, color, value, label, sub in [
-            (k1, BLUE, best["Test Accuracy"], "Overall correct", "Share of all tweets it got right"),
-            (k2, CORAL, best["Test Recall"], "Disasters found", "Share of real disaster tweets it caught"),
-            (k3, TEAL, best["Test Precision"], "Alarms that were right", "When it said disaster, how often it was"),
-            (k4, AMBER, best["Test F1"], "Balance score", "Blend of the two scores before it"),
-        ]:
-            col.markdown(f'<div class="kpi" style="border-top:5px solid {color};"><div class="v" style="color:{color};">{value * 100:.1f}%</div>'
-                         f'<div class="l">{label}</div><div class="s">{sub}</div></div>', unsafe_allow_html=True)
-
-        st.write("")
-        st.markdown("**All six models we compared on the same final exam**")
-        rows = ""
-        for _, r in metrics.iterrows():
-            win = ' class="win"' if r["Finalist"] == bundle["selected_model_name"] else ""
-            rows += (f"<tr{win}><td>{int(r['Rank'])}</td><td>{html.escape(r['Finalist'])}</td>"
-                     f"<td>{r['Test Accuracy'] * 100:.1f}%</td><td>{r['Test F1'] * 100:.1f}%</td></tr>")
-        st.markdown(f'<table class="cmp"><tr><th>#</th><th>Model</th><th>Overall correct</th><th>Balance score</th></tr>'
-                    f'{rows}</table>', unsafe_allow_html=True)
-
-        boot = bundle.get("bootstrap")
-        if boot and boot["difference_ci"][0] <= 0:
-            lead = (best["Test Accuracy"] - metrics.iloc[1]["Test Accuracy"]) * 100
-            st.markdown(
-                f'<div class="note" style="color:#5A4300;">A close race: the chosen model beat the next best by only '
-                f'{lead:.1f} percentage point(s). That is too small to be sure it would win on a different set of '
-                f'tweets, so a simpler model is a fair alternative.</div>', unsafe_allow_html=True)
-
-
-
 st.markdown('<div class="foot">This is a learning project, not an official alert system. '
             'For emergencies, always follow your local authorities.</div>', unsafe_allow_html=True)
