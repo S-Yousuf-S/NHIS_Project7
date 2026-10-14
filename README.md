@@ -40,7 +40,7 @@ Rather than building one model and reporting its score, the project builds six g
 
 **[Disaster Tweet Checker](https://disaster-tweet-checker.streamlit.app/)**
 
-Paste or type a short English message (or tap one of three examples) and the dashboard answers **Disaster report**, **Not a disaster** or **Not sure**, with a likelihood bar and a plain-language explanation.
+Select one of eight examples from the dropdown, or type your own short English message, and the dashboard answers **Disaster report**, **Not a disaster** or **Not sure**, with a likelihood bar and a plain-language explanation.
 
 > **Note:** the DistilBERT weights are downloaded from Hugging Face on first launch ([`ysakkaf/nhis-project7-distilbert`](https://huggingface.co/ysakkaf/nhis-project7-distilbert)). The first check after the app wakes from idle can take a minute; every check after that is quick.
 
@@ -167,10 +167,9 @@ Accuracy is the primary metric and F1 the secondary one; model selection inside 
 
 A Streamlit app serving the selected DistilBERT model.
 
-- **Three example messages** (Disaster, Not a disaster, Not sure) and a free-text box for any English message up to 280 characters.
-- **A plain-language answer** — *Disaster report*, *Not a disaster* or *Not sure* — with a likelihood bar and the model's percentage.
-- **"What did the AI actually read?"** shows the cleaned text the model received.
-- **"How it works"** summarises the held-out test results and compares all six models.
+- **A dropdown of eight example messages** (a mix of disaster, everyday and uncertain ones, with the answer not revealed in advance) and a free-text box for any English message up to 280 characters.
+- **A plain-language answer**: *Disaster report*, *Not a disaster* or *Not sure*, with a likelihood bar and the model's percentage.
+- **A "Recent checks" list** of the last few messages and their percentages.
 - A sidebar explains the project, how to use it, what the answers mean and how reliable it is (about 81 correct answers in 100), including the limitation on figures of speech.
 
 ---
@@ -270,7 +269,7 @@ streamlit run disaster_tweet_dashboard.py
 
 **Q: How do I try the dashboard?**
 
-**A:** Open the live dashboard, then either select one of the eight examples from the dropdown (the result appears straight away) or type your own English message of up to 280 characters and press Check message. The bar shows the chance that the message describes a real disaster, and the answer is one of Disaster report, Not a disaster or Not sure.
+**A:** Open the [live dashboard](https://disaster-tweet-checker.streamlit.app/), then either select one of the eight examples from the dropdown (the result appears straight away) or type your own English message of up to 280 characters and press **Check message**. The bar shows the chance that the message describes a real disaster, and the answer is one of *Disaster report*, *Not a disaster* or *Not sure*.
 
 **Q: How accurate is it?**
 
@@ -282,7 +281,7 @@ streamlit run disaster_tweet_dashboard.py
 
 **Q: What does "Not sure" mean?**
 
-**A:** When the model's chance of a disaster is between 45% and 55%, it is almost a coin-flip, so the dashboard says "Not sure" instead of forcing an answer. On the test tweets, answers in that band were right only about 41% of the time, against 82% for everything else. Only about 1 in 100 tweets lands there. Very short messages often land here, for example the one-word message ‘FATALITY!’ scored 54%.
+**A:** When the model's chance of a disaster is between 45% and 55%, it is almost a coin-flip, so the dashboard says "Not sure" instead of forcing an answer. On the test tweets, answers in that band were right only about 41% of the time, against 82% for everything else. Only about 1 in 100 tweets lands there. Very short messages can land here, for example the one-word message ‘FATALITY!’ scored 54%.
 
 **Q: Can it be fooled by figures of speech?**
 
