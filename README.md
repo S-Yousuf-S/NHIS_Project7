@@ -154,7 +154,7 @@ Accuracy is the primary metric and F1 the secondary one; model selection inside 
 
 ## ✅ Validation & Deployment Readiness
 
-- **Selection vs. test:** every finalist's test Accuracy is within 0.01 of its selection score — no sign that selection overfitted.
+- **Selection vs. test:** every finalist's test Accuracy is within 0.01 of its selection Accuracy — no sign that selection overfitted.
 - **Overfitting:** both deep models overfit if trained past epoch 2; the best checkpoint is kept for each.
 - **Confidence interval:** DistilBERT's test Accuracy is 0.8144 with a 95% interval of [0.7937, 0.8344].
 - **Robustness:** with 20% of words dropped or misspelt, Accuracy falls by at most 0.014.
