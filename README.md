@@ -314,7 +314,7 @@ streamlit run disaster_tweet_dashboard.py
 
 **Q: Was anything tried to fix the "figure of speech" problem?**
 
-**A:** Yes. A second DistilBERT was trained on lightly cleaned original text, keeping common words such as "on" and "the" that the main model never saw. It scored similarly and still called the figurative test sentences disasters, so it is documented but not used. A possible next step is training examples where disaster words are used figuratively (see Future Scope).
+**A:** Yes. A second DistilBERT was trained on lightly cleaned original text, keeping common words such as "on" and "the" that the main model never saw. It scored similarly and still called the figurative ‘mob flood’ test sentence a disaster (92%), so it is documented but not used. A possible next step is training examples where disaster words are used figuratively (see Future Scope).
 
 **Q: Why does the dashboard take a while on the first check?**
 
