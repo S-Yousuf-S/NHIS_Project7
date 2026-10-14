@@ -268,6 +268,10 @@ streamlit run disaster_tweet_dashboard.py
 
 **A:** You give it a short message, like a tweet, and it tells you whether the message looks like a report of a real emergency (a flood, a fire, an accident) or just everyday talk. It answers *Disaster report*, *Not a disaster* or *Not sure*.
 
+**Q: How do I try the dashboard?**
+
+**A:** Open the live dashboard, then either select one of the eight examples from the dropdown (the result appears straight away) or type your own English message of up to 280 characters and press Check message. The bar shows the chance that the message describes a real disaster, and the answer is one of Disaster report, Not a disaster or Not sure.
+
 **Q: How accurate is it?**
 
 **A:** On 1,498 tweets it had never seen, it was right about **81 times out of 100** (81.44%). A model that always guessed "not a disaster" would be right only 57 times out of 100, so it has clearly learned something real. It is not perfect: roughly 1 answer in 5 can be wrong.
@@ -278,11 +282,11 @@ streamlit run disaster_tweet_dashboard.py
 
 **Q: What does "Not sure" mean?**
 
-**A:** When the model's chance of a disaster is between 45% and 55%, it is almost a coin-flip, so the dashboard says "Not sure" instead of forcing an answer. On the test tweets, answers in that band were right only about 41% of the time, against 82% for everything else. Only about 1 in 100 tweets lands there.
+**A:** When the model's chance of a disaster is between 45% and 55%, it is almost a coin-flip, so the dashboard says "Not sure" instead of forcing an answer. On the test tweets, answers in that band were right only about 41% of the time, against 82% for everything else. Only about 1 in 100 tweets lands there. Very short messages often land here, for example the one-word message ‘FATALITY!’ scored 54%.
 
-**Q: Why did it call a message about a stage "on fire" a disaster?**
+**Q: Can it be fooled by figures of speech?**
 
-**A:** The model learns from the words in its training tweets, and in those tweets words like "fire" and "flood" mostly appear in real emergency reports. So a figure of speech such as "she set the stage on fire" can fool it. This is a limit of the training data, and the dashboard's sidebar says so.
+**A:** Yes, sometimes. The model learns from the words in its training tweets, and in those tweets words like “fire” and “flood” mostly appear in real emergency reports. In our checks it handled “She danced like a fire” (18% chance of a disaster) and “The students dance performance rocked the atmosphere” (4%) correctly, but it called “The mob flood the residency gates for the protest” a disaster (99%). This is a limit of the training data, and the dashboard’s sidebar says so.
 
 **Q: Why does it sometimes miss a real disaster?**
 
@@ -318,7 +322,7 @@ streamlit run disaster_tweet_dashboard.py
 
 **Q: Why does the dashboard take a while on the first check?**
 
-**A:** The AI model (about 268 MB) is downloaded from Hugging Face the first time the app wakes up. After that, checks are quick.
+**A:** The AI model is downloaded from Hugging Face the first time the app wakes up. After that, checks are quick.
 
 **Q: Where are the model files? I don't see them in the repository.**
 
